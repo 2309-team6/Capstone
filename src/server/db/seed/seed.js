@@ -1,39 +1,9 @@
-const db = require("./client");
-const { createUser } = require("./users");
-
-const users = [
-  {
-    name: "Emily Johnson",
-    email: "emily@example.com",
-    password: "securepass",
-    role: "ADMIN",
-  },
-  {
-    name: "Liu Wei",
-    email: "liu@example.com",
-    password: "strongpass",
-    role: "ENGINEER",
-  },
-  {
-    name: "Isabella García",
-    email: "bella@example.com",
-    password: "pass1234",
-    role: "USER",
-  },
-  {
-    name: "Mohammed Ahmed",
-    email: "mohammed@example.com",
-    password: "mysecretpassword",
-    role: "USER",
-  },
-  {
-    name: "John Smith",
-    email: "john@example.com",
-    password: "password123",
-    role: "USER",
-  },
-  // Add more user objects as needed
-];
+const db = require("../client");
+const { createUser } = require("../users");
+const { users } = require("./users-data");
+const { albums } = require("./albums-data");
+const { albumReviews } = require("./album-review-data");
+const { createAlbum, createAlbumReviews } = require("../albums");
 
 const dropTables = async () => {
   try {
@@ -63,7 +33,7 @@ const createTables = async () => {
             title VARCHAR(100) NOT NULL,
             artist VARCHAR(100) NOT NULL,
             genre VARCHAR(50),
-            releaseDate DATE,
+            releaseDate INTEGER,
             imgURL VARCHAR(255)
         )`);
     await db.query(`
@@ -103,9 +73,43 @@ const insertUsers = async () => {
         role: user.role,
       });
     }
-    console.log("Seed data inserted successfully.");
+    console.log("Seed USER data inserted successfully.");
   } catch (error) {
-    console.error("Error inserting seed data:", error);
+    console.error("Error USER inserting seed data:", error);
+  }
+};
+
+const insertAlbums = async () => {
+  try {
+    for (const album of albums) {
+      await createAlbum({
+        title: album.title,
+        artist: album.artist,
+        genre: album.genre,
+        releaseDate: album.releaseDate,
+        imgUrl: album.imgUrl,
+      });
+    }
+    console.log("Seed ALBUM data inserted successfully.");
+  } catch (error) {
+    console.error("Error inserting ALBUM seed data:", error);
+  }
+};
+
+const insertAlbumReviews = async () => {
+  try {
+    for (const review of albumReviews) {
+      await createAlbumReviews({
+        userId: review.userId,
+        albumId: review.albumId,
+        rating: review.rating,
+        comment: review.comment,
+        reviewDate: review.reviewDate,
+      });
+    }
+    console.log("Seed ALBUM REVIEWS data inserted successfully.");
+  } catch (error) {
+    console.error("Error inserting ALBUM REVIEWS seed data:", error);
   }
 };
 
@@ -115,6 +119,8 @@ const seedDatabse = async () => {
     await dropTables();
     await createTables();
     await insertUsers();
+    await insertAlbums();
+    await insertAlbumReviews();
   } catch (err) {
     throw err;
   } finally {
