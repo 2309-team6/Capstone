@@ -5,6 +5,7 @@ const { createUser, getUser, getUserByEmail, getAllUsers } = require("../db");
 
 const jwt = require("jsonwebtoken");
 
+// GET /api/users/
 usersRouter.get("/", async (req, res, next) => {
   try {
     const users = await getAllUsers();
@@ -17,6 +18,7 @@ usersRouter.get("/", async (req, res, next) => {
   }
 });
 
+// POST /api/users/login
 usersRouter.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -55,7 +57,7 @@ usersRouter.post("/login", async (req, res, next) => {
 });
 
 usersRouter.post("/register", async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
     const _user = await getUserByEmail(email);
@@ -71,6 +73,7 @@ usersRouter.post("/register", async (req, res, next) => {
       name,
       email,
       password,
+      role,
     });
 
     const token = jwt.sign(
