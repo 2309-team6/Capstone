@@ -60,7 +60,7 @@ async function getAllAlbums() {
       `
     );
     return rows;
-  } catch (error) {
+  } catch (err) {
     console.error("Could not get all albums: ", err.message);
     throw err;
   }
