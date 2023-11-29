@@ -10,7 +10,7 @@ const { createComment } = require("../comments");
 const dropTables = async () => {
   try {
     await db.query(`DROP TABLE IF EXISTS userComments;`);
-    await db.query(`DROP TABLE IF EXISTS userFavorites;`);
+    // await db.query(`DROP TABLE IF EXISTS userFavorites;`); << Favorites Table
     await db.query(`DROP TABLE IF EXISTS albumReviews;`);
     await db.query(`DROP TABLE IF EXISTS users;`);
     await db.query(`DROP TABLE IF EXISTS albums;`);
@@ -54,13 +54,14 @@ const createTables = async () => {
             reviewID INTEGER REFERENCES albumReviews(id),
             userID INTEGER REFERENCES users(id)
         )`);
-    await db.query(`
-        CREATE TABLE userFavorites(
-            id SERIAL PRIMARY KEY,
-            reviews TEXT,
-            userID INTEGER REFERENCES users(id),
-            albumID INTEGER REFERENCES albums(id)
-        )`);
+    // Is this needed - not called for in Rubric.
+    // await db.query(`
+    //     CREATE TABLE userFavorites(
+    //         id SERIAL PRIMARY KEY,
+    //         review INTEGER REFERENCES albumReviews(id),
+    //         userID INTEGER REFERENCES users(id),
+    //         albumID INTEGER REFERENCES albums(id)
+    //     )`);
   } catch (err) {
     throw err;
   }
