@@ -3,7 +3,9 @@ const { createUser } = require("../users");
 const { users } = require("./users-data");
 const { albums } = require("./albums-data");
 const { albumReviews } = require("./album-review-data");
+const { userComments } = require("./comment-data");
 const { createAlbum, createAlbumReviews } = require("../albums");
+const { createComment } = require("../comments");
 
 const dropTables = async () => {
   try {
@@ -47,13 +49,14 @@ const createTables = async () => {
         )`);
     await db.query(`
         CREATE TABLE userComments(
-            id INTEGER PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             content TEXT,
             reviewID INTEGER REFERENCES albumReviews(id),
             userID INTEGER REFERENCES users(id)
         )`);
     await db.query(`
         CREATE TABLE userFavorites(
+            id SERIAL PRIMARY KEY,
             reviews TEXT,
             userID INTEGER REFERENCES users(id),
             albumID INTEGER REFERENCES albums(id)
@@ -113,6 +116,21 @@ const insertAlbumReviews = async () => {
   }
 };
 
+const insertComments = async () => {
+  try {
+    for (const comment of userComments) {
+      await createComment({
+        content: comment.content,
+        reviewId: comment.reviewId,
+        userId: comment.userId,
+      });
+    }
+    console.log("Seed USER COMMENTS data inserted successfully.");
+  } catch (error) {
+    console.error("Error inserting USER COMMENTS seed data:", error);
+  }
+};
+
 const seedDatabse = async () => {
   try {
     db.connect();
@@ -121,6 +139,7 @@ const seedDatabse = async () => {
     await insertUsers();
     await insertAlbums();
     await insertAlbumReviews();
+    await insertComments();
   } catch (err) {
     throw err;
   } finally {
