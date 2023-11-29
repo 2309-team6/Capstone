@@ -34,6 +34,7 @@ usersRouter.post("/login", async (req, res, next) => {
         {
           id: user.id,
           email,
+          role: user.role,
         },
         process.env.JWT_SECRET,
         {
