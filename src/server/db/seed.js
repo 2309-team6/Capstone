@@ -30,6 +30,8 @@ const users = [
   // Add more user objects as needed
 ];  
 
+
+
 const dropTables = async () => {
     try {
         await db.query(`
@@ -48,13 +50,50 @@ const createTables = async () => {
             id SERIAL PRIMARY KEY,
             name VARCHAR(255) DEFAULT 'name',
             email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL
+            password VARCHAR(255) NOT NULL,
+            role VARCHAR(255)
+        )`)
+        await db.query(`
+        CREATE TABLE albums(
+            id SERIAL PRIMARY KEY,
+            title VARCHAR(100) NOT NULL,
+            artist VARCHAR(100) NOT NULL,
+            genre VARCHAR(50),
+            releaseDate DATE,
+            imgURL VARCHAR(255)
+        )`)
+        await client.query(`
+        CREATE TABLE albumReviews(
+          id SERIAL PRIMARY KEY,
+          userID INTEGER REFERENCES users(id),
+          albumID INTEGER REFERENCES albums(id),
+          rating INTEGER,
+          comment TEXT,
+          reviewDate DATE
+        )`)
+        await db.query(`
+        CREATE TABLE userComments(
+            id INTEGER PRIMARY KEY,
+            content TEXT,
+            reviewID INTEGER,
+            userID INTEGER,
+            reviewID INTEGER REFERENCES albumReviews(id),
+            userID REFERENCES users(id)
+        )`)
+        await db.query(`
+        CREATE TABLE userFavorites(
+            reviews TEXT,
+            // PRIMARY KEY (UserID, AlbumID),
+            userID REFERENCES users(id),
+            albumID REFERENCES albums(id)
         )`)
     }
     catch(err) {
         throw err;
     }
 }
+
+
 
 const insertUsers = async () => {
   try {
