@@ -74,9 +74,32 @@ const getUserByEmail = async (email) => {
   }
 };
 
+async function getUserById(id) {
+  try {
+    const {
+      rows: [user],
+    } = await db.query(
+      `
+      SELECT id, name, email, role
+      FROM users
+      WHERE id=${id};`
+    );
+
+    if (!user) {
+      return;
+    }
+
+    // return the user without their password
+    return user;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createUser,
   getUser,
   getUserByEmail,
   getAllUsers,
+  getUserById,
 };
