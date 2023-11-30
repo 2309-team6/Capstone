@@ -7,6 +7,7 @@ const {
   updateReview,
   deleteReview,
 } = require("../db/reviews");
+const { getCommentById, getCommentByReviewId } = require("../db/comments");
 
 // const { requireUser, requiredNotSent } = require('./utils')
 
@@ -20,11 +21,16 @@ reviewsRouter.get("/", async (req, res, next) => {
   }
 });
 
-// GET request for a specific review by ID
+// GET request for a specific review by ID + associated comments.
 reviewsRouter.get("/:id", async (req, res, next) => {
   try {
-    const review = await getReviewById(req.params.id);
-    res.send(review);
+    const reviews = await getReviewById(req.params.id);
+    for (let x = 0; x < reviews.length; x++) {
+      const reviewComments = await getCommentByReviewId(reviews[x].id);
+      reviews[x].comments = reviewComments;
+    }
+
+    res.send(reviews);
   } catch (err) {
     next(err);
   }
