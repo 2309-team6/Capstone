@@ -6,18 +6,20 @@ let API = "http://localhost:3000/api/";
 
 function SingleAlbum() {
   const [album, setAlbum] = useState({});
-  const [reviews, setReviews] = useState([
-    {
-      rating: 5,
-      comment: "I love this album",
-      reviewdate: new Date.now.toString()
-    }
-  ]); 
+  const [review, setReview] = useState([]); 
+  // const [reviews, setReviews] = useState([
+  //   {
+  //     rating: 5,
+  //     comment: "I love this album",
+  //     reviewdate: new Date.now.toString()
+  //   }
+  // ]); 
 
   const { id } = useParams(); 
 
   useEffect(() => {
     fetchSingleAlbum();
+    fetchReviews();
   }, []);
 
   async function fetchSingleAlbum() {
@@ -43,7 +45,7 @@ function SingleAlbum() {
     try {
       const { data:json } = await axios.get(`${API}/reviews/${id}`);
 
-      setReviews(json);
+      setReview(json);
     }
     catch (err) {
       console.error("Unable to find reviews: ", err.message);
@@ -63,6 +65,7 @@ function SingleAlbum() {
 
   return (
     <div className="single-album">
+      <div className="album-info">
           <h1>Single Album</h1>
 
           <h2>{album.title}</h2>
@@ -70,6 +73,13 @@ function SingleAlbum() {
           <h2>Genre: {album.genre}</h2>
           <h2>Release Date: {album.releasedate}</h2>
           <img src={album.imgurl} />
+      </div>
+    <hr></hr>
+      <div className="review-info">
+        <h3>Rating: {review.rating} </h3>
+        <p>Comment: {review.comment}</p>
+        <p>Review Date: {review.reviewdate}</p>
+      </div>
 
     </div>
   );
