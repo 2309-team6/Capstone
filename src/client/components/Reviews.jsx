@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 
 let API = "http://localhost:3000/api/";
 
-function AlbumReviews() {
+function AlbumReviews(props) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const navigate = useNavigate();

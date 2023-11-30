@@ -26,6 +26,20 @@ usersRouter.get("/", async (req, res, next) => {
   }
 });
 
+// GET /api/users/info
+usersRouter.get("/info", async (req, res, next) => {
+  try {
+    const user = await getUserById(req.user.id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).body("Unable to find user by given id");
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
 // GET /api/users/info/:id
 usersRouter.get("/info/:id", async (req, res, next) => {
   try {
