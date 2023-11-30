@@ -17,10 +17,6 @@ function AlbumReviews(props) {
   useEffect(() => {}, []);
 
   async function handleSubmit() {
-    // Implement your logic to submit the review data
-    console.log("Rating:", rating);
-    console.log("Comment:", comment);
-
     const postData = {
       userId: 1, // Get real userID. Need log in.
       albumId: id,
@@ -30,7 +26,11 @@ function AlbumReviews(props) {
     };
 
     try {
-      const response = await axios.post(`${API}/reviews`, postData);
+      const response = await axios.post(`${API}/reviews`, postData, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         navigate(`/albums/${id}`);

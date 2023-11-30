@@ -9,19 +9,23 @@ apiRouter.use(async (req, res, next) => {
   const auth = req.header("Authorization");
   if (!auth) {
     next();
-  } else if (auth.startsWith("Bearer ")) {
+  } else if (auth?.startsWith("Bearer ")) {
     try {
       const token = auth.slice(7);
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decodedToken;
-      next();
+      if (token === "null") {
+        next();
+      } else {
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decodedToken;
+        next();
+      }
     } catch (error) {
       next(error);
     }
   } else {
     next({
       name: "AuthorizationHeaderError",
-      message: `Authorization token must start with 'Bearer'`,
+      message: `Authorization token must start with 'Bearer '`,
     });
   }
 });

@@ -22,7 +22,11 @@ function Comments(props) {
     };
 
     try {
-      const response = await axios.post(`${API}/comments`, postData);
+      const response = await axios.post(`${API}/comments`, postData, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         navigate(`/albums/${id}`);
