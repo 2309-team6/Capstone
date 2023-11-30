@@ -21,8 +21,11 @@ const createComment = async ({ content, reviewId, userId }) => {
 };
 
 async function deleteComment(id) {
-  try { 
-    const { rows } = await db.query('DELETE FROM usercomments WHERE id=$1 RETURNING *', [id]);
+  try {
+    const { rows } = await db.query(
+      "DELETE FROM usercomments WHERE id=$1 RETURNING *",
+      [id]
+    );
     return rows[0];
   } catch (err) {
     throw err;
@@ -31,7 +34,7 @@ async function deleteComment(id) {
 
 async function getComments() {
   try {
-    const { rows } = await db.query(`SELECT * FROM usercomments;`)
+    const { rows } = await db.query(`SELECT * FROM usercomments;`);
     return rows;
   } catch (err) {
     throw err;
@@ -40,10 +43,10 @@ async function getComments() {
 
 // async function getCommentsByUserId(){
 //   try {
-//     const { rows } = 
+//     const { rows } =
 //   } catch (err) {
 //     throw err;
 //   }
 // }
 
-module.exports = { createComment, getComments,deleteComment };
+module.exports = { createComment, getComments, deleteComment };
