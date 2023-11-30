@@ -2,6 +2,7 @@ const express = require("express");
 const albumRouter = express.Router();
 
 const { getAlbum } = require("../db/albums");
+const { getAllAlbums } = require("../db/albums");
 
 albumRouter.get("/:id", async (req, res, next) => {
   try {
@@ -11,8 +12,6 @@ albumRouter.get("/:id", async (req, res, next) => {
     next(err);
   }
 });
-
-const { getAllAlbums } = require("../db/albums");
 
 // GET /api/albums/
 albumRouter.get("/", async (req, res, next) => {
