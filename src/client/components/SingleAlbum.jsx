@@ -66,14 +66,18 @@ function SingleAlbum() {
   return (
     <div className="single-album">
       <div className="album-info">
-          <h1>Single Album</h1>
-
           <h2>{album.title}</h2>
           <h3>By: {album.artist}</h3>
           <h2>Genre: {album.genre}</h2>
           <h2>Release Date: {album.releasedate}</h2>
           <img src={album.imgurl} />
       </div>
+    <hr></hr>
+    <div className="review-form">
+      <h2>Ratings & Reviews</h2>
+      <h3>What do you think?</h3>
+      <button>Write a Review</button>
+    </div>
     <hr></hr>
       <div className="review-info">
         <h3>Rating: {review.rating} </h3>

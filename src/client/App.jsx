@@ -5,6 +5,7 @@ import AllAlbums from './components/AllAlbums';
 import SingleAlbum from './components/SingleAlbum';
 import Account from './components/Account';
 import Register from './components/Register';
+import Reviews from './components/Reviews';
 import axios from 'axios';
 
 let API = "http://localhost:3000/api/";
