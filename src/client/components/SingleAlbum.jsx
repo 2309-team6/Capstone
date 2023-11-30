@@ -59,17 +59,19 @@ function SingleAlbum() {
 
   function redirectToReview() {
     event.preventDefault();
-    navigate("/reviews");  
+    navigate(`/albums/${id}/reviews`);  
   }
 
   return (
     <div className="single-album">
+      <div className="album-img">
+        <img src={album.imgurl} />
+      </div>
       <div className="album-info">
           <h1>{album.title}</h1>
           <h3>By: {album.artist}</h3>
           <h4>Genre: {album.genre}</h4>
-          <h4>Release Date: {album.releasedate}</h4>
-          <img src={album.imgurl} />
+          <h4>Release Date: {album.releasedate}</h4>  
       </div>
     <hr></hr>
     <div className="review-redirect">

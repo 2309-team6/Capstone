@@ -31,7 +31,7 @@ function App() {
       <Route path="/register" element={<Register token={token} setToken={setToken}/>} />
       <Route path="/login" element={<Login />} />
       <Route path="/account" element={<Account />} />
-      <Route path="/reviews" element={<AlbumReviews />} />
+      <Route path="/albums/:id/reviews" element={<AlbumReviews />} />
     </Routes>
 
     </div>
