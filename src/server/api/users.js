@@ -40,7 +40,7 @@ usersRouter.get("/info/:id", async (req, res, next) => {
   }
 });
 
-// GET /api/users/info/:id
+// GET /api/users/details/:id
 // This pulls ALL of a user's review and comment history.
 usersRouter.get("/details/:id", async (req, res, next) => {
   try {
