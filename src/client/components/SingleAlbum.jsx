@@ -6,6 +6,13 @@ let API = "http://localhost:3000/api/";
 
 function SingleAlbum() {
   const [album, setAlbum] = useState({});
+  const [reviews, setReviews] = useState([
+    {
+      rating: 5,
+      comment: "I love this album",
+      reviewdate: new Date.now.toString()
+    }
+  ]); 
 
   const { id } = useParams(); 
 
@@ -21,8 +28,8 @@ function SingleAlbum() {
       
       setAlbum(json); 
 
-      console.log("API Response: ", json);
-      console.log("Returns: ",json.album);
+      // console.log("API Response: ", json);
+      // console.log("Returns: ",json.album);
     }
     catch (err) {
       console.error("Unable to find that album: ", err.message);
@@ -30,16 +37,19 @@ function SingleAlbum() {
   }
 
   // TO DO: Add - Reviews & Comments
-  /*
+  // Create a Review component with form/submit.
+  
   async function fetchReviews() {
     try {
+      const { data:json } = await axios.get(`${API}/reviews/${id}`);
 
+      setReviews(json);
     }
     catch (err) {
       console.error("Unable to find reviews: ", err.message);
     }
   }
-  */
+  
   /*
   async function fetchComments() {
     try {
