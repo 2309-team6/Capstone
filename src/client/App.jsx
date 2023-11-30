@@ -5,7 +5,7 @@ import AllAlbums from './components/AllAlbums';
 import SingleAlbum from './components/SingleAlbum';
 import Account from './components/Account';
 import Register from './components/Register';
-import Reviews from './components/Reviews';
+import AlbumReviews from './components/Reviews';
 import axios from 'axios';
 
 let API = "http://localhost:3000/api/";
@@ -31,6 +31,7 @@ function App() {
       <Route path="/register" element={<Register token={token} setToken={setToken}/>} />
       <Route path="/login" element={<Login />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/reviews" element={<AlbumReviews />} />
     </Routes>
 
     </div>

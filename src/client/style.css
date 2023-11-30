@@ -53,3 +53,15 @@ nav {
 /* Reviews */
 
 /* Single Album */
+.album-info > img {
+  border: 2px solid black;
+}
+
+.review-redirect > h3 {
+  text-align: center; 
+}
+
+.review-button {
+  display: flex;
+  justify-content: center;
+}
