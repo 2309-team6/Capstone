@@ -6,6 +6,7 @@ const {
   createReview,
   updateReview,
   deleteReview,
+  getUserReviewsById,
 } = require("../db/reviews");
 const { getCommentById, getCommentByReviewId } = require("../db/comments");
 
@@ -40,7 +41,18 @@ reviewsRouter.get("/:id", async (req, res, next) => {
 reviewsRouter.post("/", async (req, res, next) => {
   try {
     const { rating, comment } = req.body;
-    console.log(req.body);
+
+    const userReviews = await getUserReviewsById(req.body.userId);
+
+    for (let x = 0; x < userReviews.length; x++) {
+      const review = userReviews[x];
+      if (Number.parseInt(req.body.albumId) === review.albumid) {
+        res
+          .status(400)
+          .json({ message: "You've already reviewed this album!" });
+        return;
+      }
+    }
 
     // Check if rating and comment are provided
     if (!rating || !comment) {
