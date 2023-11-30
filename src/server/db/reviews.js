@@ -25,7 +25,7 @@ const createReview = async ({ userId, albumId, rating, comment, reviewDate }) =>
         } = await db.query(
             `
             INSERT INTO albumReviews(userId, albumId, rating, comment, reviewDate)
-            VALUE($1, $2, $3)
+            VALUES($1, $2, $3, $4, $5)
             RETURNING *
             `,
             [ userId, albumId, rating, comment, reviewDate ]
@@ -39,7 +39,7 @@ const createReview = async ({ userId, albumId, rating, comment, reviewDate }) =>
 };
 
 
-const updateReview = async (reviewId, { userId, albumId, rating, comment, reviewDate }) => {
+const updateReview = async (id, { userId, albumId, rating, comment, reviewDate }) => {
     try {
         const {
             rows: [updatedReview],
@@ -47,10 +47,10 @@ const updateReview = async (reviewId, { userId, albumId, rating, comment, review
             `
             UPDATE albumReviews
             SET userId = $2, albumId = $3, rating = $4, comment = $5, reviewDate = $6
-            WHERE reviewId = $1
+            WHERE id = $1
             RETURNING *
             `,
-            [reviewId, userId, albumId, rating, comment, reviewDate]
+            [id, userId, albumId, rating, comment, reviewDate]
         );
 
         if (!updatedReview) {
@@ -64,11 +64,11 @@ const updateReview = async (reviewId, { userId, albumId, rating, comment, review
     }
 };
 
-const deleteReview = async (reviewId) => {
+const deleteReview = async (id) => {
     try {
         const {
             rows: [deletedReview],
-        } = await db.query('DELETE FROM albumReviews WHERE reviewId = $1 RETURNING *', [reviewId]);
+        } = await db.query('DELETE FROM albumReviews WHERE id = $1 RETURNING *', [id]);
 
         if (!deletedReview) {
             throw new Error('Review not found');

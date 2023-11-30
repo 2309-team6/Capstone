@@ -6,7 +6,7 @@ const createComment = async ({ content, reviewId, userId }) => {
       rows: [comment],
     } = await db.query(
       `
-      INSERT INTO usercomments(content, reviewid, userid)
+      INSERT INTO userComments(content, reviewId, userId)
       VALUES($1, $2, $3)
       RETURNING *
       `,
@@ -23,7 +23,7 @@ const createComment = async ({ content, reviewId, userId }) => {
 async function deleteComment(id) {
   try {
     const { rows } = await db.query(
-      "DELETE FROM usercomments WHERE id=$1 RETURNING *",
+      "DELETE FROM userComments WHERE id=$1 RETURNING *",
       [id]
     );
     return rows[0];
@@ -34,19 +34,44 @@ async function deleteComment(id) {
 
 async function getComments() {
   try {
-    const { rows } = await db.query(`SELECT * FROM usercomments;`);
+    const { rows } = await db.query(`SELECT * FROM userComments;`);
     return rows;
   } catch (err) {
     throw err;
   }
 }
 
-// async function getCommentsByUserId(){
-//   try {
-//     const { rows } =
-//   } catch (err) {
-//     throw err;
-//   }
-// }
+async function getCommentById(id) {
+  try {
+      const { rows } = await db.query('SELECT * FROM userComments WHERE id=$1', [id]);
+      return rows[0];
+  } catch (err) {
+      throw err;
+  }
+}
 
-module.exports = { createComment, getComments, deleteComment };
+async function updateComment(id, updatedFields) {
+  try {
+    const { rows: updatedComment } = await db.query(
+      `
+      UPDATE userComments
+      SET content = $1, reviewId = $2, userId = $3
+      WHERE id = $4
+      RETURNING *
+      `,
+      [updatedFields.content, updatedFields.reviewId, updatedFields.userId, id]
+    );
+
+    if (!updatedComment || updatedComment.length === 0) {
+      throw new Error('Comment not found');
+    }
+
+    return updatedComment[0];
+  } catch (err) {
+    console.error('Unable to update comment.', err.message);
+    throw err;
+  }
+};
+
+
+module.exports = { createComment, getComments, deleteComment, getCommentById, updateComment };
