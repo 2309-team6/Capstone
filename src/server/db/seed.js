@@ -62,7 +62,7 @@ const createTables = async () => {
             releaseDate DATE,
             imgURL VARCHAR(255)
         )`)
-        await client.query(`
+        await db.query(`
         CREATE TABLE albumReviews(
           id SERIAL PRIMARY KEY,
           userID INTEGER REFERENCES users(id),
