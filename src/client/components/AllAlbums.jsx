@@ -30,7 +30,7 @@ function AllAlbums() {
             <h3>#{album.id}</h3>
             <h3>{album.releasedate}</h3>
             <img src={album.imgurl} />
-            <button onClick={() => navigate(`/details/${album.id}`)}>Show Details</button>
+            <button onClick={() => navigate(`/albums/${album.id}`)}>Show Details</button>
           </li>
         ))
       ) : (
