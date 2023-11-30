@@ -7,7 +7,7 @@ let API = "http://localhost:3000/api/";
 
 function SingleAlbum() {
   const [album, setAlbum] = useState({});
-  const [review, setReview] = useState([]); 
+  const [reviews, setReviews] = useState([]); 
 
   const [comments, setComments] = useState({}); 
   const navigate = useNavigate();
@@ -39,7 +39,9 @@ function SingleAlbum() {
     try {
       const { data:json } = await axios.get(`${API}/reviews/${id}`);
 
-      setReview(json);
+      setReviews(json);
+
+      console.log(json);
     }
     catch (err) {
       console.error("Unable to find reviews: ", err.message);
@@ -82,13 +84,19 @@ function SingleAlbum() {
       </div>
     </div>
     <hr></hr>
-      <div className="review-info">
-        <h4>Rating: {review.rating} </h4> {/* How do I connect this to my star rating? */}
+    {
+      reviews.map(review => {
+        return(
+        <div className="review-info" key={review.id}>
+        <h4>Rating: {review.rating} </h4> 
         <p>Comment: {review.comment}</p>
         <p>Review Date: {review.reviewdate}</p>
         <button>Comment</button>
         {/* Need to display comments + responses under the reviews. */}
       </div>
+          )
+      })
+    }
 
     </div>
   );

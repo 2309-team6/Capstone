@@ -26,7 +26,7 @@ function AlbumReviews() {
 
     
     const postData = {
-      userId: 1,  // Get real userID. 
+      userId: 1,  // Get real userID. Need log in. 
       albumId: id,  
       rating: rating,
       comment: comment,
