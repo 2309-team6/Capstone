@@ -34,9 +34,11 @@ const users = [
 
 const dropTables = async () => {
     try {
-        await db.query(`
-        DROP TABLE IF EXISTS users;
-        `)
+      await db.query(`DROP TABLE IF EXISTS userComments;`)
+      await db.query(`DROP TABLE IF EXISTS userFavorites;`)
+      await db.query(`DROP TABLE IF EXISTS albumReviews;`)
+      await db.query(`DROP TABLE IF EXISTS users;`)
+      await db.query(`DROP TABLE IF EXISTS albums;`)
     }
     catch(err) {
         throw err;
@@ -64,28 +66,25 @@ const createTables = async () => {
         )`)
         await db.query(`
         CREATE TABLE albumReviews(
-          id SERIAL PRIMARY KEY,
-          userID INTEGER REFERENCES users(id),
-          albumID INTEGER REFERENCES albums(id),
-          rating INTEGER,
-          comment TEXT,
-          reviewDate DATE
+            id SERIAL PRIMARY KEY,
+            userID INTEGER REFERENCES users(id),
+            albumID INTEGER REFERENCES albums(id),
+            rating INTEGER,
+            comment TEXT,
+            reviewDate DATE
         )`)
         await db.query(`
         CREATE TABLE userComments(
             id INTEGER PRIMARY KEY,
             content TEXT,
-            reviewID INTEGER,
-            userID INTEGER,
             reviewID INTEGER REFERENCES albumReviews(id),
-            userID REFERENCES users(id)
+            userID INTEGER REFERENCES users(id)
         )`)
         await db.query(`
         CREATE TABLE userFavorites(
             reviews TEXT,
-            // PRIMARY KEY (UserID, AlbumID),
-            userID REFERENCES users(id),
-            albumID REFERENCES albums(id)
+            userID INTEGER REFERENCES users(id),
+            albumID INTEGER REFERENCES albums(id)
         )`)
     }
     catch(err) {
