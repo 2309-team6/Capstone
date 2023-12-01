@@ -189,16 +189,15 @@ nav {
 /* Register */
 
 /* Single Album */
-.album-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: -21.5rem; 
-  margin-bottom: 5rem; 
+.single-album-flex {
+  display: flex; 
+  padding: 1rem 1rem;
 }
 
-.album-title {
-  margin-bottom: -.5rem;
+.album-info {
+  text-align: center;
+  flex: .7;
+  margin: 2rem 0;
 }
 
 .album-rating {
@@ -207,14 +206,7 @@ nav {
   font-size: 1.5rem;
 }
 
-.album-genre {
-  margin-bottom: -.5rem; 
-}
-
 .single-album-img > img {
-  padding-left: 4rem; 
-  /* width: 350px;
-  height: 350px; */
   width: 24rem;
   height: 24rem;
 }
