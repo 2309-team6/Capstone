@@ -120,9 +120,9 @@ function SingleAlbum(props) {
         <img src={album.imgurl} />
       </div>
       <div className="album-info">
-        <h1>{album.title}</h1>
-        <h3>By: {album.artist}</h3>
-        <h3>Average Rating: {avgRating}</h3>
+        <h1 className="album-title">{album.title}</h1>
+        <h2 className="album-artist">By: {album.artist}</h2>
+        <h3 className="album-rating">Average Rating: {avgRating}</h3>
 
         {isAdmin() ? (
           <div className="genre-edit">
@@ -135,17 +135,20 @@ function SingleAlbum(props) {
             <button onClick={() => onSaveAlbum(album.id)}>Save Changes</button>
           </div>
         ) : (
-          <h4>Genre: {album.genre}</h4>
+          <h4 className="album-genre">Genre: {album.genre}</h4>
         )}
 
-        <h4>Release Date: {album.releasedate}</h4>
+        <h4 className="album-date">Release Date: {album.releasedate}</h4>
+
         {isAdmin() ? (
           <button onClick={() => onDelete(album.id)}>Delete Album</button>
         ) : (
           <></>
         )}
       </div>
+
       <hr></hr>
+
       <div className="review-redirect">
         <h2>Ratings & Reviews</h2>
         <h3>What do you think?</h3>
@@ -166,6 +169,7 @@ function SingleAlbum(props) {
                 cancel={false}
               />
             </div>
+            {/* <p>Name: {review.userid}</p> */}
             <p>Review: {review.comment}</p>
             <p>Review Date: {review.reviewdate}</p>
             <button

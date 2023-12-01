@@ -42,7 +42,7 @@ function AlbumReviews(props) {
 
   return (
     <div className="reviews-form">
-      <div className="p-field">
+      <div className="review-form-rating">
         <label htmlFor="rating">Rating: </label>
         <Rating
           id="rating"
@@ -51,7 +51,17 @@ function AlbumReviews(props) {
           cancel={false}
         />
       </div>
-      <div className="p-field">
+
+      {/* <div className="review-form-name">
+        <label htmlFor="comment">Name: </label>
+        <InputText
+          id="comment"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      </div> */}
+
+      <div className="review-form-text">
         <label htmlFor="comment">Review: </label>
         <InputText
           id="comment"
@@ -59,7 +69,7 @@ function AlbumReviews(props) {
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
-      <div className="p-field">
+      <div className="review-form-button">
         <Button label="Submit" onClick={handleSubmit} />
       </div>
     </div>
