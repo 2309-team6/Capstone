@@ -43,13 +43,18 @@ function AlbumReviews(props) {
   return (
     <div className="reviews-form">
       <div className="review-form-rating">
-        <label htmlFor="rating">Rating: </label>
-        <Rating
-          id="rating"
-          value={rating}
-          onChange={(e) => setRating(e.value ?? 0)}
-          cancel={false}
-        />
+        <label htmlFor="rating" className="review-title">
+          Rating & Review{" "}
+        </label>
+        <p>Add your star rating and review below.</p>
+        <div className="star-rating-2">
+          <Rating
+            id="rating"
+            value={rating}
+            onChange={(e) => setRating(e.value ?? 0)}
+            cancel={false}
+          />
+        </div>
       </div>
 
       {/* <div className="review-form-name">

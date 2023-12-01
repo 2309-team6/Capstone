@@ -138,7 +138,7 @@ function SingleAlbum(props) {
           <h4 className="album-genre">Genre: {album.genre}</h4>
         )}
 
-        <h4 className="album-date">Release Date: {album.releasedate}</h4>
+        <h4 className="album-date">Release Year: {album.releasedate}</h4>
 
         {isAdmin() ? (
           <button onClick={() => onDelete(album.id)}>Delete Album</button>
@@ -153,39 +153,47 @@ function SingleAlbum(props) {
         <h2>Ratings & Reviews</h2>
         <h3>What do you think?</h3>
         <div className="review-button">
-          <button onClick={redirectToReview}>Write a Review</button>
+          <button onClick={redirectToReview} className="review-submit">
+            Write a Review
+          </button>
         </div>
       </div>
       <hr></hr>
       {reviews.map((review) => {
         return (
           <div className="review-info" key={review.id}>
-            <div>
-              <h4>Rating: </h4>
-              <Rating
-                id="rating"
-                value={review.rating}
-                readOnly
-                cancel={false}
-              />
+            <div className="single-rating">
+              <div className="star-rating">
+                {/* <h4>Rating: </h4> */}
+                <Rating
+                  id="rating"
+                  value={review.rating}
+                  readOnly
+                  cancel={false}
+                />
+              </div>
+
+              {/* <p>Name: {review.userid}</p> */}
+              <p>{review.comment}</p>
+              <p className="review-date">Date: {review.reviewdate}</p>
+              <button
+                className="comment-submit"
+                value={review.id}
+                onClick={(event) => onCommentClick(event.target.value)}
+              >
+                Comment
+              </button>
             </div>
-            {/* <p>Name: {review.userid}</p> */}
-            <p>Review: {review.comment}</p>
-            <p>Review Date: {review.reviewdate}</p>
-            <button
-              value={review.id}
-              onClick={(event) => onCommentClick(event.target.value)}
-            >
-              Comment
-            </button>
-            {review.comments.map((comment) => {
-              return (
-                <div key={comment.id}>
-                  <h4>{comment.userid}</h4>
-                  <p>{comment.content}</p>
-                </div>
-              );
-            })}
+            <div className="comment-block">
+              {review.comments.map((comment) => {
+                return (
+                  <div key={comment.id} className="single-comment">
+                    <h4>{comment.userid}</h4>
+                    <p>{comment.content}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         );
       })}
