@@ -17,8 +17,6 @@ function AdminUsers(props) {
           Authorization: `Bearer ${props?.token}`,
         },
       });
-
-      console.log("Users ", json.users);
       setUsers(json.users);
     } catch (err) {
       console.error("Unable to find users: ", err.message);
