@@ -37,7 +37,6 @@ function SingleAlbum(props) {
       const { data: json } = await axios.get(`${API}/reviews/${id}`);
 
       setReviews(json);
-      console.log(json);
       getAvgRating(json);
     } catch (err) {
       console.error("Unable to find reviews: ", err.message);
