@@ -9,32 +9,27 @@ import AlbumReviews from "./components/Reviews";
 import Comments from "./components/Comments";
 import SearchBar from "./components/SearchBar";
 import AdminFooter from "./components/AdminFooter";
+import AddAlbum from "./components/AddAlbum";
 import axios from "axios";
 
 let API = "http://localhost:3000/api/";
 
 function App() {
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState({});
   const [albums, setAlbums] = useState([]);
   const [filteredAlbums, setFilteredAlbums] = useState([]);
 
-  // console.log("All Albums:", albums);
-
-  // console.log("Filtered Albums:", filteredAlbums);
+  useEffect(() => {
+    fetchUser();
+  }, [token]);
 
   function filterAlbums(searchTerm, albums) {
-    // console.log('Filtering with search term:', searchTerm);
-    // console.log(albums);
-
     const filtered = albums.filter((album) => {
       const titleLower = album.title.toLowerCase();
       const artistLower = album.artist.toLowerCase();
       const genreLower = album.genre.toLowerCase();
       const searchTermLower = searchTerm.toLowerCase();
-
-      // test to see what the term is comparing to
-      // console.log('Comparing:', titleLower, artistLower, genreLower, 'with', searchTermLower);
-      // console.log(titleLower.includes(searchTermLower), artistLower.includes(searchTermLower), genreLower.includes(searchTermLower));
 
       return (
         titleLower.includes(searchTermLower) ||
@@ -43,9 +38,26 @@ function App() {
       );
     });
 
-    // console.log('Filtered Albums:', filtered);
     setFilteredAlbums(filtered);
     return filtered;
+  }
+
+  async function fetchUser() {
+    try {
+      const { data: json } = await axios.get(`${API}/users/info`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUser(json);
+    } catch (err) {
+      console.error("Unable to retrieve user.", err.message);
+    }
+  }
+
+  function isAdmin() {
+    return user?.role === "ADMIN";
   }
 
   return (
@@ -101,9 +113,13 @@ function App() {
           path="/albums/:id/reviews/:reviewId/comments"
           element={<Comments token={token} />}
         />
+        <Route
+          path="/admin/album"
+          element={<AddAlbum token={token} user={user} />}
+        />
       </Routes>
 
-      <AdminFooter token={token} />
+      {isAdmin() ? <AdminFooter token={token} user={user} /> : <></>}
     </div>
   );
 }
