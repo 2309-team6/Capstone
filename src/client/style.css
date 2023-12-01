@@ -66,9 +66,10 @@ nav {
   margin-bottom: 5rem; 
 }
 
-.album-img {
-  max-width: 200px; 
+.single-album-img > img {
   padding-left: 4rem; 
+  width: 350px;
+  height: 350px;
 }
 
 .review-redirect > h3 {
