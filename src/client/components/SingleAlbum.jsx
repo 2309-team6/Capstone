@@ -19,18 +19,7 @@ function SingleAlbum(props) {
     fetchSingleAlbum();
     fetchReviews();
     fetchUser();
-    // fetchUserName();
   }, []);
-
-  // async function fetchUserName(userId) {
-  //   try {
-  //     const { data: json } = await axios.get(`${API}/reviews/${id}`);
-  //     return json.name;
-  //   } catch (err) {
-  //     console.error("Unable to retrieve user name.", err.message);
-  //     return "Unknown User";
-  //   }
-  // }
 
   async function fetchSingleAlbum() {
     try {
@@ -78,9 +67,7 @@ function SingleAlbum(props) {
         },
       });
       setUser(json);
-    } catch (err) {
-      console.error("Unable to retrieve user.", err.message);
-    }
+    } catch (err) {}
   }
 
   async function onSaveAlbum(id) {
@@ -119,6 +106,10 @@ function SingleAlbum(props) {
   function redirectToReview() {
     event.preventDefault();
     navigate(`/albums/${id}/reviews`);
+  }
+
+  function getUserNameById(users, userId) {
+    return users.find((user) => user?.id === userId)?.name;
   }
 
   function isAdmin() {
@@ -190,8 +181,7 @@ function SingleAlbum(props) {
                   cancel={false}
                 />
               </div>
-
-              {/* <p>Name: {review.userid}</p> */}
+              <h4>{getUserNameById(review.users, review.userid)}</h4>
               <p>{review.comment}</p>
               <p className="review-date">Date: {review.reviewdate}</p>
               <button
@@ -206,7 +196,7 @@ function SingleAlbum(props) {
               {review.comments.map((comment) => {
                 return (
                   <div key={comment.id} className="single-comment">
-                    <h4>{comment.userid}</h4>
+                    <h4>{getUserNameById(review.users, comment.userid)}</h4>
                     <p>{comment.content}</p>
                   </div>
                 );

@@ -53,7 +53,7 @@ function App() {
 
       setUser(json);
     } catch (err) {
-      console.error("Unable to retrieve user.", err.message);
+      // console.error("Unable to retrieve user.", err.message);
     }
   }
 
