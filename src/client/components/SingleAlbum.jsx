@@ -57,7 +57,7 @@ function SingleAlbum() {
 
   return (
     <div className="single-album">
-      <div className="album-img">
+      <div className="single-album-img">
         <img src={album.imgurl} />
       </div>
       <div className="album-info">
