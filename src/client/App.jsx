@@ -66,7 +66,6 @@ function App() {
     <div className="App">
       <header className="app-header">
         <h1>
-          {" "}
           <img id="comp-img" src="/computer.png"></img>Album Reviews
         </h1>
         <nav>
@@ -122,7 +121,6 @@ function App() {
         />
         <Route path="/search/:searchTerm" element={<FilteredAlbums />} />
       </Routes>
-      
     </div>
   );
 }

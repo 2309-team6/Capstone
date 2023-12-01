@@ -172,7 +172,6 @@ function SingleAlbum(props) {
           <div className="review-info" key={review.id}>
             <div className="single-rating">
               <div className="star-rating">
-                {/* <h4>Rating: </h4> */}
                 <Rating
                   id="rating"
                   value={review.rating}
@@ -182,7 +181,9 @@ function SingleAlbum(props) {
               </div>
               <h4>{getUserNameById(review.users, review.userid)}</h4>
               <p>{review.comment}</p>
-              <p className="review-date">Date: {review.reviewdate}</p>
+              <p className="review-date">
+                Date: {new Date(review.reviewdate).toLocaleDateString()}
+              </p>
               <button
                 className="comment-submit"
                 value={review.id}

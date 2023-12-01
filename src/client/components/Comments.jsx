@@ -31,22 +31,23 @@ function Comments(props) {
       if (response.status >= 200 && response.status < 300) {
         navigate(`/albums/${id}`);
       }
+      text;
     } catch (err) {
       console.error("Unable to submit that comment: ", err.message);
     }
   }
 
   return (
-    <div className="reviews-form">
-      <div className="review-from-entry">
-        <h2>Add a Comment to a Review</h2>
+    <div className="comment-form">
+      <div className="comment-form-entry">
+        <h2>Comment on a Review</h2>
         <label htmlFor="comment">Comment: </label>
-        <input
+        <textarea
           type="text"
           id="comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-        ></input>
+        ></textarea>
       </div>
       <div className="comment-submit-button">
         <button label="Submit" onClick={handleSubmit}>
