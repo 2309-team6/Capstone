@@ -10,6 +10,7 @@ function SingleAlbum(props) {
   const [reviews, setReviews] = useState([]);
   const [avgRating, setAvgRating] = useState(0);
   const [user, setUser] = useState({});
+  const [genre, setGenre] = useState("");
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -25,6 +26,7 @@ function SingleAlbum(props) {
       const { data: json } = await axios.get(`${API}/albums/${id}`);
 
       setAlbum(json);
+      setGenre(json.genre);
     } catch (err) {
       console.error("Unable to find that album: ", err.message);
     }
@@ -70,6 +72,28 @@ function SingleAlbum(props) {
     }
   }
 
+  async function onSaveAlbum(id) {
+    try {
+      const albumToUpdate = {
+        title: album.title,
+        artist: album.artist,
+        genre: genre,
+        releaseDate: album.releasedate,
+        imgUrl: album.imgurl,
+      };
+      const response = await axios.patch(`${API}/albums/${id}`, albumToUpdate, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
+      if (response.status >= 200 && response.status < 300) {
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Unable to update album.", err.message);
+    }
+  }
+
   function getAvgRating(reviews) {
     if (reviews.length === 0) {
       return 0;
@@ -99,7 +123,21 @@ function SingleAlbum(props) {
         <h1>{album.title}</h1>
         <h3>By: {album.artist}</h3>
         <h3>Average Rating: {avgRating}</h3>
-        <h4>Genre: {album.genre}</h4>
+
+        {isAdmin() ? (
+          <div className="genre-edit">
+            <label>Genre: </label>
+            <input
+              value={genre}
+              className="edit-input"
+              onChange={(event) => setGenre(event.target.value)}
+            ></input>
+            <button onClick={() => onSaveAlbum(album.id)}>Save Changes</button>
+          </div>
+        ) : (
+          <h4>Genre: {album.genre}</h4>
+        )}
+
         <h4>Release Date: {album.releasedate}</h4>
         {isAdmin() ? (
           <button onClick={() => onDelete(album.id)}>Delete Album</button>
