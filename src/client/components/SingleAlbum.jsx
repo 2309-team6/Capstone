@@ -19,7 +19,18 @@ function SingleAlbum(props) {
     fetchSingleAlbum();
     fetchReviews();
     fetchUser();
+    // fetchUserName();
   }, []);
+
+  // async function fetchUserName(userId) {
+  //   try {
+  //     const { data: json } = await axios.get(`${API}/reviews/${id}`);
+  //     return json.name;
+  //   } catch (err) {
+  //     console.error("Unable to retrieve user name.", err.message);
+  //     return "Unknown User";
+  //   }
+  // }
 
   async function fetchSingleAlbum() {
     try {

@@ -63,7 +63,7 @@ const Login = (props) => {
               required
             />
           </div>
-          <div>
+          <div className="login-email">
             <label htmlFor="password">Password: </label>
             <input
               type="password"

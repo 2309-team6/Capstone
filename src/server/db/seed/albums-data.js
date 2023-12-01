@@ -170,7 +170,7 @@ const albums = [
     genre: "pop",
     releaseDate: 2011,
     imgUrl:
-      "https://en.wikipedia.org/wiki/Born_This_Way_(song)#/media/File:Lady_Gaga_-_Born_This_Way_(single).png",
+      "https://upload.wikimedia.org/wikipedia/en/c/c3/Born_This_Way_album_cover.png",
   },
   {
     title: "Utopia",
@@ -178,7 +178,7 @@ const albums = [
     genre: "Hip-hop/Rap",
     releaseDate: 2023,
     imgUrl:
-      "https://en.wikipedia.org/wiki/Utopia_(Travis_Scott_album)#/media/File:Travis_Scott_-_Utopia.png",
+      "https://upload.wikimedia.org/wikipedia/en/2/23/Travis_Scott_-_Utopia.png",
   },
   {
     title: "Dawn FM",
@@ -186,7 +186,7 @@ const albums = [
     genre: "Pop",
     releaseDate: 2022,
     imgUrl:
-      "https://en.wikipedia.org/wiki/Dawn_FM#/media/File:The_Weeknd_-_Dawn_FM.png",
+      "https://upload.wikimedia.org/wikipedia/en/b/b9/The_Weeknd_-_Dawn_FM.png",
   },
   {
     title: "The Beatles (White Album)",
@@ -194,7 +194,7 @@ const albums = [
     genre: "Rock",
     releaseDate: 1968,
     imgUrl:
-      "https://en.wikipedia.org/wiki/The_Beatles_(album)#/media/File:TheBeatles68LP.jpg",
+      "https://media.pitchfork.com/photos/5929a5ef5e6ef95969320bfd/master/pass/9955e3fd.jpg",
   },
   {
     title: "Lemonade",
@@ -202,7 +202,7 @@ const albums = [
     genre: "R & B",
     releaseDate: 2016,
     imgUrl:
-      "https://en.wikipedia.org/wiki/Lemonade_(album)#/media/File:Beyonce_-_Lemonade_(Official_Album_Cover).png",
+      "https://upload.wikimedia.org/wikipedia/en/5/53/Beyonce_-_Lemonade_%28Official_Album_Cover%29.png",
   },
 ];
 
