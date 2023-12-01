@@ -72,11 +72,28 @@ async function getAlbum(id) {
     const {
       rows: [album],
     } = await db.query("SELECT * FROM albums WHERE id=$1", [id]);
-    // return rows[0];
     return album;
   } catch (err) {
     throw err;
   }
 }
 
-module.exports = { createAlbum, createAlbumReviews, getAllAlbums, getAlbum };
+async function deleteAlbumById(id) {
+  try {
+    const { rows } = await db.query(
+      "DELETE FROM albums WHERE id=$1 RETURNING *",
+      [id]
+    );
+    return rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = {
+  createAlbum,
+  createAlbumReviews,
+  getAllAlbums,
+  getAlbum,
+  deleteAlbumById,
+};
