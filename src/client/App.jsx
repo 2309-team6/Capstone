@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import AllAlbums from "./components/AllAlbums";
@@ -8,13 +8,13 @@ import Register from "./components/Register";
 import AlbumReviews from "./components/Reviews";
 import Comments from "./components/Comments";
 import SearchBar from "./components/SearchBar";
+import AdminFooter from "./components/AdminFooter";
 import axios from "axios";
 
 let API = "http://localhost:3000/api/";
 
 function App() {
   const [token, setToken] = useState(null);
-  const [user, setUser] = useState({});
   const [albums, setAlbums] = useState([]);
   const [filteredAlbums, setFilteredAlbums] = useState([]);
 
@@ -102,6 +102,8 @@ function App() {
           element={<Comments token={token} />}
         />
       </Routes>
+
+      <AdminFooter token={token} />
     </div>
   );
 }
