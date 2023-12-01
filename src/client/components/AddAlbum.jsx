@@ -35,6 +35,7 @@ function AddAlbum(props) {
 
   return (
     <form className="add-album-form" onSubmit={handleSubmit}>
+      <h2>Add an Album</h2>
       <label>
         Title:
         <input

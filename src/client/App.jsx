@@ -84,6 +84,7 @@ function App() {
           albums={albums}
         />
       </header>
+      {isAdmin() ? <AdminFooter token={token} user={user} /> : <></>}
 
       <Routes>
         <Route
@@ -123,8 +124,6 @@ function App() {
           element={<AdminUsers token={token} user={user} />}
         />
       </Routes>
-
-      {isAdmin() ? <AdminFooter token={token} user={user} /> : <></>}
     </div>
   );
 }
