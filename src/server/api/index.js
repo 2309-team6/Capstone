@@ -31,8 +31,11 @@ apiRouter.use(async (req, res, next) => {
 
 const usersRouter = require("./users");
 const albumsRouter = require("./albums");
+const reviewsRouter = require("./reviews");
+
 apiRouter.use("/users", usersRouter);
 apiRouter.use("/albums", albumsRouter);
+apiRouter.use("/reviews", reviewsRouter);
 
 apiRouter.use((err, req, res, next) => {
   res.status(500).send(err);
