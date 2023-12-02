@@ -9,22 +9,14 @@ async function getReviews() {
     }
 }
 
-const getReviewById = async (reviewId) => {
+async function getReviewById(id) {
     try {
-        const {
-            rows: [review],
-        } = await db.query('SELECT * FROM albumReviews WHERE reviewId = $1;', [reviewId]);
-
-        if (!review) {
-            throw new Error('Review not found');
-        }
-
-        return review;
+        const { rows } = await db.query('SELECT * FROM albumReviews WHERE id=$1', [id]);
+        return rows[0];
     } catch (err) {
-        console.error('Unable to get review. ', err.message);
         throw err;
     }
-};
+}
 
 const createReview = async ({ userId, albumId, rating, comment, reviewDate }) => {
     try {

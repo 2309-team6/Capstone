@@ -14,13 +14,10 @@ reviewsRouter.get('/', async (req, res, next) => {
 
 
 // GET request for a specific review by ID
-reviewsRouter.get("/reviews/:id", async (req, res, next) => {
+reviewsRouter.get("/:id", async (req, res, next) => {
     try {
         const review = await getReviewById(req.params.id);
-        if (!review) {
-            return res.status(404).json({ message: "Review not found" });
-        }
-        res.json(review);
+        res.send(review);
     } catch (err) {
         next(err);
     }
