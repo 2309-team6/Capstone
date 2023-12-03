@@ -1,5 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
+const { isLoggedIn } = require("./roles");
 
 const {
   createUser,
@@ -14,7 +15,7 @@ const {
 const jwt = require("jsonwebtoken");
 
 // GET /api/users/
-usersRouter.get("/", async (req, res, next) => {
+usersRouter.get("/", isLoggedIn("admin"), async (req, res, next) => {
   try {
     const users = await getAllUsers();
 
@@ -29,7 +30,11 @@ usersRouter.get("/", async (req, res, next) => {
 // GET /api/users/info
 usersRouter.get("/info", async (req, res, next) => {
   try {
-    const user = await getUserById(req.user.id);
+    if (!req?.user?.id) {
+      res.status(400).json("User is required");
+      return;
+    }
+    const user = await getUserById(req?.user?.id);
     if (user) {
       res.json(user);
     } else {

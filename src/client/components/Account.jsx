@@ -6,20 +6,15 @@ import { Rating } from "primereact/rating";
 let API = "http://localhost:3000/api/";
 
 function Account(props) {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const [myComments, setMyComments] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [error, setError] = useState(null);
-  
-  const [commentToEdit, setCommentToEdit] = useState(null);
-  const [updatedComment, setUpdatedComment] = useState("");
-
 
   useEffect(() => {
     if (props.token) {
       fetchMyAccount();
       // console.log("user.id: ", user.id);
-      
     }
   }, [props.token]);
 
@@ -54,7 +49,6 @@ function Account(props) {
       if (json.id) {
         fetchMyAccountDetails(json.id);
       }
-      
     } catch (error) {
       setError(error.message);
     }
@@ -77,8 +71,6 @@ function Account(props) {
       setMyReviews(json.reviews);
       // json is an object
       console.log("json: ", json);
-
-
     } catch (error) {
       setError(error.message);
     }
@@ -118,17 +110,17 @@ function Account(props) {
   }
 
   function handleEditComment(id, updatedComment) {
-    setCommentToEdit(id)
-    setUpdatedComment(updatedComment)
+    setCommentToEdit(id);
+    setUpdatedComment(updatedComment);
   }
-  function handleCancelEdit () {
+  function handleCancelEdit() {
     setCommentToEdit(null);
-    setUpdatedComment('');
-  };
+    setUpdatedComment("");
+  }
 
   async function saveEditComment(id, updatedComment) {
     try {
-      const commentToUpdate = myComments.find(comment => comment.id === id);
+      const commentToUpdate = myComments.find((comment) => comment.id === id);
       if (!commentToUpdate) {
         console.error(`Comment with id ${id} not found.`);
         return;
@@ -147,23 +139,23 @@ function Account(props) {
 
       const jsonResponse = await response.json();
 
-    console.log("Server Response:", jsonResponse);
+      console.log("Server Response:", jsonResponse);
 
-    if (jsonResponse.comment) {
-      const updatedComments = myComments.map(comment => 
-        comment.id === id ? 
-          { 
-            ...jsonResponse.comment, 
-            userId: commentToUpdate.userId, 
-            reviewId: commentToUpdate.reviewId 
-          } : 
-          comment 
-      );
+      if (jsonResponse.comment) {
+        const updatedComments = myComments.map((comment) =>
+          comment.id === id
+            ? {
+                ...jsonResponse.comment,
+                userId: commentToUpdate.userId,
+                reviewId: commentToUpdate.reviewId,
+              }
+            : comment
+        );
 
-      setMyComments(updatedComments);
-    } else {
-      console.error("Comment not updated successfully.");
-    }
+        setMyComments(updatedComments);
+      } else {
+        console.error("Comment not updated successfully.");
+      }
       // const json = await response.json();
       // console.log("patch request response: ", json);
 
@@ -173,15 +165,12 @@ function Account(props) {
     }
   }
 
-
-
-
   return (
     <div className="account-page-container">
       {error && <p>{error}</p>}
-  
+
       <h1>Welcome, {user.name}</h1>
-  
+
       {props.token ? (
         <div>
           <div className="comment-history">
@@ -193,11 +182,16 @@ function Account(props) {
                     {commentToEdit === comment.id ? (
                       <>
                         <input
-                          type="text" placeholder={comment.content}
+                          type="text"
+                          placeholder={comment.content}
                           value={updatedComment}
                           onChange={(e) => setUpdatedComment(e.target.value)}
                         />
-                        <button onClick={() => saveEditComment(comment?.id, updatedComment)}>
+                        <button
+                          onClick={() =>
+                            saveEditComment(comment?.id, updatedComment)
+                          }
+                        >
                           Save
                         </button>
                         <button onClick={() => handleCancelEdit(comment?.id)}>
@@ -210,7 +204,11 @@ function Account(props) {
                         <button onClick={() => deleteComment(comment?.id)}>
                           Delete Comment
                         </button>
-                        <button onClick={() => handleEditComment(comment?.id, updatedComment)}>
+                        <button
+                          onClick={() =>
+                            handleEditComment(comment?.id, updatedComment)
+                          }
+                        >
                           Edit Comment
                         </button>
                       </>
@@ -222,7 +220,7 @@ function Account(props) {
               )}
             </ul>
           </div>
-  
+
           <div className="review-history">
             <h2>My Reviews</h2>
             <ul>

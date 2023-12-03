@@ -26,7 +26,7 @@ async function deleteComment(id) {
       "DELETE FROM userComments WHERE id=$1 RETURNING *",
       [id]
     );
-    return rows[0];
+    return rows;
   } catch (err) {
     throw err;
   }

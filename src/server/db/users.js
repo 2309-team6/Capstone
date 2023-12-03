@@ -42,7 +42,7 @@ const getUser = async ({ email, password }) => {
 const getAllUsers = async () => {
   try {
     const userData = await db.query(
-      `SELECT *
+      `SELECT id, name, email, role
        FROM users`
     );
 
