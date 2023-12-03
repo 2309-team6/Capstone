@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { InputText } from "primereact/inputtext";
 import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
 
@@ -59,11 +58,6 @@ function AlbumReviews(props) {
 
       <div className="review-form-text">
         <label htmlFor="comment">Review: </label>
-        {/* <InputText
-          id="comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        /> */}
         <textarea
           type="text"
           id="comment"

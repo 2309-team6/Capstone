@@ -8,7 +8,6 @@ import Register from "./components/Register";
 import AlbumReviews from "./components/Reviews";
 import Comments from "./components/Comments";
 import FilteredAlbums from "./components/FilteredAlbums";
-import SearchBar from "./components/SearchBar";
 import AdminFooter from "./components/AdminFooter";
 import AddAlbum from "./components/AddAlbum";
 import axios from "axios";

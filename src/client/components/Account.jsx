@@ -227,6 +227,7 @@ function Account(props) {
                         />
                         <div>
                           <Rating
+                            className="star-rating"
                             id="rating"
                             value={updatedRating}
                             onChange={(e) => setUpdatedRating(e.value ?? 0)}
@@ -254,6 +255,7 @@ function Account(props) {
                         <h3>{review.comment}</h3>
                         <h4>Rating: </h4>
                         <Rating
+                          className="star-rating"
                           id="rating"
                           value={review.rating}
                           readOnly

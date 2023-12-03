@@ -61,9 +61,7 @@ function AllAlbums({ albums, setAlbums }) {
             albums.map((album) => (
               <li key={album.id} className="all-albums-details">
                 <h2>{album.title}</h2>
-                {/* <h3>#{album.id}</h3> */}
                 <h3>{album.artist}</h3>
-                {/* <h3>{album.releasedate}</h3> */}
                 <img
                   src={album.imgurl}
                   alt={album.title}
