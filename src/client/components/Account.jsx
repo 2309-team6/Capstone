@@ -207,7 +207,7 @@ function Account(props) {
     <div className="account-page-container">
       {error && <p>{error}</p>}
 
-      <h1>Welcome, {user.name}</h1>
+      <h1>Welcome, {user.name}!</h1>
 
       {props.token ? (
         <div className="review-container">
@@ -233,20 +233,21 @@ function Account(props) {
                             cancel={false}
                           />
                         </div>
-
-                        <button
-                          value={review?.id}
-                          onClick={(event) =>
-                            saveEditReview(event.target.value)
-                          }
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={() => handleCancelEditReview(review?.id)}
-                        >
-                          Cancel
-                        </button>
+                        <div className="account-button">
+                          <button
+                            value={review?.id}
+                            onClick={(event) =>
+                              saveEditReview(event.target.value)
+                            }
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={() => handleCancelEditReview(review?.id)}
+                          >
+                            Cancel
+                          </button>
+                        </div>
                       </>
                     ) : (
                       <>
@@ -258,20 +259,22 @@ function Account(props) {
                           readOnly
                           cancel={false}
                         />
-                        <button onClick={() => deleteReview(review?.id)}>
-                          Delete Review
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleEditReview(
-                              review.id,
-                              updatedReview,
-                              updatedRating
-                            )
-                          }
-                        >
-                          Edit Review
-                        </button>
+                        <div className="account-button">
+                          <button onClick={() => deleteReview(review?.id)}>
+                            Delete Review
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleEditReview(
+                                review.id,
+                                updatedReview,
+                                updatedRating
+                              )
+                            }
+                          >
+                            Edit Review
+                          </button>
+                        </div>
                       </>
                     )}
                   </li>
@@ -281,7 +284,7 @@ function Account(props) {
               )}
             </ul>
           </div>
-
+          <hr></hr>
           <div className="comment-history">
             <h2>My Comments</h2>
             <ul>
@@ -296,30 +299,34 @@ function Account(props) {
                           value={updatedComment}
                           onChange={(e) => setUpdatedComment(e.target.value)}
                         />
-                        <button
-                          onClick={() =>
-                            saveEditComment(comment?.id, updatedComment)
-                          }
-                        >
-                          Save
-                        </button>
-                        <button onClick={() => handleCancelEdit(comment?.id)}>
-                          Cancel
-                        </button>
+                        <div className="account-button">
+                          <button
+                            onClick={() =>
+                              saveEditComment(comment?.id, updatedComment)
+                            }
+                          >
+                            Save
+                          </button>
+                          <button onClick={() => handleCancelEdit(comment?.id)}>
+                            Cancel
+                          </button>
+                        </div>
                       </>
                     ) : (
                       <>
                         <h3>{comment.content}</h3>
-                        <button onClick={() => deleteComment(comment?.id)}>
-                          Delete Comment
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleEditComment(comment?.id, updatedComment)
-                          }
-                        >
-                          Edit Comment
-                        </button>
+                        <div className="account-button">
+                          <button onClick={() => deleteComment(comment?.id)}>
+                            Delete Comment
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleEditComment(comment?.id, updatedComment)
+                            }
+                          >
+                            Edit Comment
+                          </button>
+                        </div>
                       </>
                     )}
                   </li>
