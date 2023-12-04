@@ -24,7 +24,7 @@ reviewsRouter.get("/:id", async (req, res, next) => {
 });
 
 // POST request for a new review
-reviewsRouter.post("/reviews", async (req, res, next) => {
+reviewsRouter.post("/", async (req, res, next) => {
     try {
         const { rating, comment } = req.body;
 
@@ -49,7 +49,7 @@ reviewsRouter.post("/reviews", async (req, res, next) => {
 });
 
 // PATCH request to update reviews
-reviewsRouter.patch("/reviews/:id", async (req, res, next) => {
+reviewsRouter.patch("/:id", async (req, res, next) => {
     try {
         const updatedReview = await updateReview(
             req.params.id,
@@ -65,8 +65,8 @@ reviewsRouter.patch("/reviews/:id", async (req, res, next) => {
     }
 });
 
-// DELETE a review
-reviewsRouter.delete("/reviews/:id", async (req, res, next) => {
+// DELETE request to delete a review
+reviewsRouter.delete("/:id", async (req, res, next) => {
     try {
         const deletedReview = await deleteReview(req.params.id);
         if (!deletedReview) {
