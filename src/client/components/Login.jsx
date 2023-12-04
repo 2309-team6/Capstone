@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+let API = "http://localhost:3000/api/";
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

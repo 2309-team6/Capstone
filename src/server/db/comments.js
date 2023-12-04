@@ -20,9 +20,6 @@ const createComment = async ({ content, reviewId, userId }) => {
   }
 };
 
-
-module.exports = { createComment };
-
 async function deleteComment(id) {
   try {
     const { rows } = await db.query(
@@ -53,4 +50,3 @@ async function getComments() {
 // }
 
 module.exports = { createComment, getComments, deleteComment };
-
