@@ -50,6 +50,9 @@ const createAlbumReviews = async ({
   }
 };
 
+
+module.exports = { createAlbum, createAlbumReviews };
+
 //get album by id
 async function getAlbum(id) {
   try {
@@ -78,3 +81,4 @@ async function getAllAlbums() {
 }
 
 module.exports = { createAlbum, createAlbumReviews, getAllAlbums };
+
