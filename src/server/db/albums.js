@@ -50,4 +50,31 @@ const createAlbumReviews = async ({
   }
 };
 
-module.exports = { createAlbum, createAlbumReviews };
+//get album by id
+async function getAlbum(id) {
+  try {
+    const { rows } = await db.query("SELECT * FROM albums WHERE id=$1", [id]);
+    return rows[0];
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { createAlbum, createAlbumReviews, getAlbum };
+// Database Functions
+async function getAllAlbums() {
+  try {
+    const { rows } = await db.query(
+      `
+      SELECT * 
+      FROM albums; 
+      `
+    );
+    return rows;
+  } catch (err) {
+    console.error("Could not get all albums: ", err.message);
+    throw err;
+  }
+}
+
+module.exports = { createAlbum, createAlbumReviews, getAllAlbums };
