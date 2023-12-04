@@ -10,16 +10,6 @@ apiRouter.use(async (req, res, next) => {
 
   if (!auth) {
     next();
-  } else if (auth.startsWith("REPLACE_ME")) {
-    // TODO - Get JUST the token out of 'auth'
-    const token = "REPLACE_ME";
-
-    try {
-      const parsedToken = "REPLACE_ME";
-      // TODO - Call 'jwt.verify()' to see if the token is valid. If it is, use it to get the user's 'id'. Look up the user with their 'id' and set 'req.user'
-
-  if (!auth) {
-    next();
   } else if (auth.startsWith("Bearer ")) {
     try {
       const token = auth.slice(7);
