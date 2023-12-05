@@ -27,7 +27,7 @@ function App() {
     <Routes>
       <Route path="/" element={<AllAlbums />} />
       <Route path="/albums/:id" element={<SingleAlbum />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/register" element={<Register token={token} setToken={setToken}/>} />
       <Route path="/login" element={<Login />} />
       <Route path="/account" element={<Account />} />
     </Routes>
