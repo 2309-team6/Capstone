@@ -75,4 +75,3 @@ async function updateComment(id, updatedFields) {
 
 
 module.exports = { createComment, getComments, deleteComment, getCommentById, updateComment };
-

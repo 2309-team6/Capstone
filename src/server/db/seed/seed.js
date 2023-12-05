@@ -10,9 +10,6 @@ const { createComment } = require("../comments");
 const dropTables = async () => {
   try {
     await db.query(`DROP TABLE IF EXISTS userComments;`);
-
-    // await db.query(`DROP TABLE IF EXISTS userFavorites;`);
-
     // await db.query(`DROP TABLE IF EXISTS userFavorites;`); << Favorites Table
     await db.query(`DROP TABLE IF EXISTS albumReviews;`);
     await db.query(`DROP TABLE IF EXISTS users;`);
