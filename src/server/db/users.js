@@ -39,7 +39,6 @@ const getUser = async ({ email, password }) => {
   }
 };
 
-
 const getAllUsers = async () => {
   try {
     const userData = await db.query(
@@ -79,7 +78,5 @@ module.exports = {
   createUser,
   getUser,
   getUserByEmail,
-
   getAllUsers,
-
 };

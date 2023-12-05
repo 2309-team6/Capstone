@@ -60,15 +60,25 @@ usersRouter.post("/login", async (req, res, next) => {
 // POST /api/users/register
 usersRouter.post("/register", async (req, res, next) => {
   const { name, email, password, role } = req.body;
-
   try {
     const _user = await getUserByEmail(email);
-
+    
+    
     if (_user) {
       next({
         name: "UserExistsError",
         message: "A user with that email already exists",
       });
+    }
+    
+    // validation to ensure no fields are empty
+    if (name == '' || email == '' || password == ''){
+     next({
+       name: 'EmptyFieldsError',
+       message: "All fields Must be filled out",
+     });
+     // prevent form submission (stop it from getting added ot the db table)
+     event.preventDefault();
     }
 
     const user = await createUser({
