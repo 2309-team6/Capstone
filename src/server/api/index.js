@@ -7,7 +7,6 @@ apiRouter.use(volleyball);
 
 apiRouter.use(async (req, res, next) => {
   const auth = req.header("Authorization");
-
   if (!auth) {
     next();
   } else if (auth.startsWith("Bearer ")) {
@@ -16,7 +15,6 @@ apiRouter.use(async (req, res, next) => {
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decodedToken;
       next();
-
     } catch (error) {
       next(error);
     }
@@ -39,7 +37,6 @@ apiRouter.use("/reviews", reviewsRouter);
 apiRouter.use("/comments", commentsRouter);
 
 const id = require("volleyball/lib/id");
-
 
 
 apiRouter.use((err, req, res, next) => {
