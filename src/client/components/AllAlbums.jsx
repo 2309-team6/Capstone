@@ -28,7 +28,8 @@ function AllAlbums() {
           <li key={album.id}>
             <h3>{album.title}</h3>
             <h3>#{album.id}</h3>
-            <img src={album.imageUrl} />
+            <h3>{album.releasedate}</h3>
+            <img src={album.imgurl} />
             <button onClick={() => navigate(`/details/${album.id}`)}>Show Details</button>
           </li>
         ))
