@@ -2,6 +2,8 @@ const express = require("express");
 const reviewsRouter = express.Router();
 const { getReviews, getReviewById, createReview, updateReview, deleteReview } = require('../db/reviews')
 
+// const { requireUser, requiredNotSent } = require('./utils')
+
 // GET request for all reviews 
 reviewsRouter.get('/', async (req, res, next) => {
     try {
@@ -41,6 +43,8 @@ reviewsRouter.post("/", async (req, res, next) => {
             comment: comment,
             reviewDate: new Date().toISOString(),
         });
+
+        console.log("SQL Query:", newReview.query);
 
         res.status(201).json({ message: "Review added successfully", review: newReview });
     } catch (err) {

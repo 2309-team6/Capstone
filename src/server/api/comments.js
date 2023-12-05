@@ -1,7 +1,6 @@
 const express = require("express");
 const commentRouter = express.Router();
 
-const {createComment, deleteComment, getComments } = require('../db/comments');
 
 //get all comments
 commentRouter.get('/', async (req, res, next) => {

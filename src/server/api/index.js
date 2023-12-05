@@ -30,19 +30,16 @@ apiRouter.use(async (req, res, next) => {
 
 const usersRouter = require("./users");
 const albumsRouter = require("./albums");
-
+const commentsRouter = require("./comments");
 const reviewsRouter = require("./reviews");
 
 apiRouter.use("/users", usersRouter);
 apiRouter.use("/albums", albumsRouter);
 apiRouter.use("/reviews", reviewsRouter);
+apiRouter.use("/comments", commentsRouter);
 
-const commentsRouter = require("./comments");
 const id = require("volleyball/lib/id");
 
-apiRouter.use("/users", usersRouter);
-apiRouter.use("/albums", albumsRouter);
-apiRouter.use("/comments", commentsRouter);
 
 
 apiRouter.use((err, req, res, next) => {
