@@ -1,25 +1,23 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 
 let API = "http://localhost:3000/api/";
 
 function SingleAlbum() {
   const [album, setAlbum] = useState({});
   const [review, setReview] = useState([]); 
-  // const [reviews, setReviews] = useState([
-  //   {
-  //     rating: 5,
-  //     comment: "I love this album",
-  //     reviewdate: new Date.now.toString()
-  //   }
-  // ]); 
 
+  const [comments, setComments] = useState({}); 
+  const navigate = useNavigate();
+  
   const { id } = useParams(); 
 
   useEffect(() => {
     fetchSingleAlbum();
     fetchReviews();
+    fetchComments();
   }, []);
 
   async function fetchSingleAlbum() {
@@ -29,9 +27,6 @@ function SingleAlbum() {
       const { data: json } = await axios.get(`${API}/albums/${id}`); 
       
       setAlbum(json); 
-
-      // console.log("API Response: ", json);
-      // console.log("Returns: ",json.album);
     }
     catch (err) {
       console.error("Unable to find that album: ", err.message);
@@ -39,7 +34,6 @@ function SingleAlbum() {
   }
 
   // TO DO: Add - Reviews & Comments
-  // Create a Review component with form/submit.
   
   async function fetchReviews() {
     try {
@@ -51,38 +45,48 @@ function SingleAlbum() {
       console.error("Unable to find reviews: ", err.message);
     }
   }
-  
-  /*
+
+  // /*
   async function fetchComments() {
     try {
+      const { data:json } = await axios.get(`${API}/comments/${id}`)
 
+      setComments(json);
     }
     catch (err) {
       console.error("Unable to find comments: ", err.message);
     }
   }
-  */
+
+  function redirectToReview() {
+    event.preventDefault();
+    navigate("/reviews");  
+  }
 
   return (
     <div className="single-album">
       <div className="album-info">
-          <h2>{album.title}</h2>
+          <h1>{album.title}</h1>
           <h3>By: {album.artist}</h3>
-          <h2>Genre: {album.genre}</h2>
-          <h2>Release Date: {album.releasedate}</h2>
+          <h4>Genre: {album.genre}</h4>
+          <h4>Release Date: {album.releasedate}</h4>
           <img src={album.imgurl} />
       </div>
     <hr></hr>
-    <div className="review-form">
+    <div className="review-redirect">
       <h2>Ratings & Reviews</h2>
       <h3>What do you think?</h3>
-      <button>Write a Review</button>
+      <div className="review-button">
+      <button onClick={redirectToReview}>Write a Review</button>
+      </div>
     </div>
     <hr></hr>
       <div className="review-info">
-        <h3>Rating: {review.rating} </h3>
+        <h4>Rating: {review.rating} </h4> {/* How do I connect this to my star rating? */}
         <p>Comment: {review.comment}</p>
         <p>Review Date: {review.reviewdate}</p>
+        <button>Comment</button>
+        {/* Need to display comments + responses under the reviews. */}
       </div>
 
     </div>
