@@ -46,7 +46,6 @@ function SingleAlbum() {
     }
   }
 
-  // /*
   async function fetchComments() {
     try {
       const { data:json } = await axios.get(`${API}/comments/${id}`)
