@@ -30,13 +30,15 @@ const usersRouter = require("./users");
 const albumsRouter = require("./albums");
 const commentsRouter = require("./comments");
 const reviewsRouter = require("./reviews");
-
 const id = require("volleyball/lib/id");
 
 apiRouter.use("/users", usersRouter);
 apiRouter.use("/albums", albumsRouter);
-apiRouter.use("/comments", commentsRouter);
 apiRouter.use("/reviews", reviewsRouter);
+apiRouter.use("/comments", commentsRouter);
+
+const id = require("volleyball/lib/id");
+
 
 apiRouter.use((err, req, res, next) => {
   res.status(500).send(err);

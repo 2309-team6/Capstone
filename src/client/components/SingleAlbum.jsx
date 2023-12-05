@@ -2,11 +2,13 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { useParams, useNavigate } from "react-router-dom";
 
+
 let API = "http://localhost:3000/api/";
 
 function SingleAlbum() {
   const [album, setAlbum] = useState({});
   const [review, setReview] = useState([]); 
+
   const [comments, setComments] = useState({}); 
   const navigate = useNavigate();
   
@@ -43,7 +45,7 @@ function SingleAlbum() {
       console.error("Unable to find reviews: ", err.message);
     }
   }
-  
+
   // /*
   async function fetchComments() {
     try {
@@ -55,7 +57,6 @@ function SingleAlbum() {
       console.error("Unable to find comments: ", err.message);
     }
   }
-  // */
 
   function redirectToReview() {
     event.preventDefault();

@@ -3,6 +3,7 @@ import axios from "axios"
 import { useParams } from "react-router-dom";
 import { Rating } from 'primereact/rating';
 
+
 let API = "http://localhost:3000/api/";
 
 function AlbumReviews() {
@@ -25,13 +26,13 @@ function AlbumReviews() {
     }
 
     try{
-   
   
     }
     catch (err) {
       console.error("Unable to find that review: ", err.message);
     }
   }
+
 
 
   return (
@@ -44,7 +45,6 @@ function AlbumReviews() {
         <input type="text" placeholder="Your Review..." />
         <button>Submit</button>
       </div>
-
     </div>
   );
 }
