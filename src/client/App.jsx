@@ -7,15 +7,50 @@ import Account from "./components/Account";
 import Register from "./components/Register";
 import AlbumReviews from "./components/Reviews";
 import Comments from "./components/Comments";
+import SearchBar from './components/SearchBar';
 import axios from "axios";
+
 
 let API = "http://localhost:3000/api/";
 
 function App() {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState({});
+  const [albums, setAlbums] = useState([]);
+  const [filteredAlbums, setFilteredAlbums] = useState([]);
+
+  console.log("All Albums:", albums);
+
+  console.log("Filtered Albums:", filteredAlbums);
+
+
+  function filterAlbums(searchTerm, albums){
+    console.log('Filtering with search term:', searchTerm);
+    console.log(albums);
+  
+    const filtered = albums.filter((album) => {
+      const titleLower = album.title.toLowerCase();
+      const artistLower = album.artist.toLowerCase();
+      const genreLower = album.genre.toLowerCase();
+      const searchTermLower = searchTerm.toLowerCase();
+  
+      console.log('Comparing:', titleLower, artistLower, genreLower, 'with', searchTermLower);
+      console.log(titleLower.includes(searchTermLower), artistLower.includes(searchTermLower), genreLower.includes(searchTermLower));
+  
+      return (
+        titleLower.includes(searchTermLower) ||
+        artistLower.includes(searchTermLower) ||
+        genreLower.includes(searchTermLower)
+      );
+    });
+  
+    console.log('Filtered Albums:', filtered);
+    return filtered;
+  };
+
 
   return (
+
     <div className="App">
       <header className="app-header">
         <h1>
@@ -36,7 +71,7 @@ function App() {
       </header>
 
       <Routes>
-        <Route path="/" element={<AllAlbums />} />
+        <Route path="/" element={<AllAlbums albums={albums} setAlbums={setAlbums} />} />
         <Route path="/albums/:id" element={<SingleAlbum />} />
         <Route
           path="/register"
