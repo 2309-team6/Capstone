@@ -46,6 +46,7 @@ function App() {
     });
   
     // console.log('Filtered Albums:', filtered);
+    setFilteredAlbums(filtered);
     return filtered;
   };
 
@@ -73,7 +74,7 @@ function App() {
       </header>
 
       <Routes>
-        <Route path="/" element={<AllAlbums albums={albums} setAlbums={setAlbums} />} />
+        <Route path="/" element={<AllAlbums albums={albums} setAlbums={setAlbums} filteredAlbums={filteredAlbums}/>} />
         <Route path="/albums/:id" element={<SingleAlbum />} />
         <Route
           path="/register"
