@@ -8,6 +8,7 @@ let API = "http://localhost:3000/api/";
 function SingleAlbum() {
   const [album, setAlbum] = useState({});
   const [reviews, setReviews] = useState([]);
+  const [avgRating, setAvgRating] = useState(0);
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -41,6 +42,8 @@ function SingleAlbum() {
       const { data: json } = await axios.get(`${API}/reviews/${id}`);
 
       setReviews(json);
+
+      getAvgRating(json);
     } catch (err) {
       console.error("Unable to find reviews: ", err.message);
     }
@@ -50,6 +53,17 @@ function SingleAlbum() {
     navigate(`/albums/${id}/reviews/${reviewId}/comments`);
   }
 
+  function getAvgRating(reviews) {
+    if (reviews.length === 0) {
+      return 0;
+    }
+    const sumReviews = reviews.reduce((acc, curr) => {
+      return acc + curr.rating;
+    }, 0);
+    const averageRating = sumReviews / reviews.length;
+    setAvgRating(averageRating.toFixed(2));
+  }
+
   function redirectToReview() {
     event.preventDefault();
     navigate(`/albums/${id}/reviews`);
@@ -57,12 +71,13 @@ function SingleAlbum() {
 
   return (
     <div className="single-album">
-      <div className="album-img">
+      <div className="single-album-img">
         <img src={album.imgurl} />
       </div>
       <div className="album-info">
         <h1>{album.title}</h1>
         <h3>By: {album.artist}</h3>
+        <h3>Average Rating: {avgRating}</h3>
         <h4>Genre: {album.genre}</h4>
         <h4>Release Date: {album.releasedate}</h4>
       </div>
