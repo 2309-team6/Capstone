@@ -80,12 +80,18 @@ function App() {
           path="/register"
           element={<Register token={token} setToken={setToken} />}
         />
-        <Route path="/login" element={<Login />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/albums/:id/reviews" element={<AlbumReviews />} />
+        <Route
+          path="/login"
+          element={<Login token={token} setToken={setToken} />}
+        />
+        <Route path="/account" element={<Account token={token} />} />
+        <Route
+          path="/albums/:id/reviews"
+          element={<AlbumReviews token={token} />}
+        />
         <Route
           path="/albums/:id/reviews/:reviewId/comments"
-          element={<Comments />}
+          element={<Comments token={token} />}
         />
       </Routes>
     </div>
