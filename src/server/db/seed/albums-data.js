@@ -115,7 +115,7 @@ const albums = [
   title: "Flower Boy",
   artist: "Tyler the Creator",
   genre: "hip hop",
-  releaseData: 2017,
+  releaseDate: 2017,
   imgUrl: "https://upload.wikimedia.org/wikipedia/en/c/c3/Tyler%2C_the_Creator_-_Flower_Boy.png",
 },
 {
