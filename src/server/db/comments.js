@@ -87,6 +87,17 @@ async function updateComment(id, updatedFields) {
   }
 }
 
+async function getUserCommentsById(userId) {
+  try {
+    const { rows } = await db.query(
+      `SELECT * FROM userComments WHERE userid=${userId}`
+    );
+    return rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createComment,
   getComments,
@@ -94,4 +105,5 @@ module.exports = {
   getCommentById,
   updateComment,
   getCommentByReviewId,
+  getUserCommentsById,
 };

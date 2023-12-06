@@ -94,10 +94,22 @@ const deleteReview = async (id) => {
   }
 };
 
+async function getUserReviewsById(userId) {
+  try {
+    const { rows } = await db.query(
+      `SELECT * FROM albumReviews WHERE userid=${userId}`
+    );
+    return rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   getReviews,
   getReviewById,
   createReview,
   updateReview,
   deleteReview,
+  getUserReviewsById,
 };
