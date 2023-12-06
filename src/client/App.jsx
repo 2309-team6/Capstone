@@ -5,6 +5,7 @@ import AllAlbums from './components/AllAlbums';
 import SingleAlbum from './components/SingleAlbum';
 import Account from './components/Account';
 import Register from './components/Register';
+import SearchBar from './components/SearchBar';
 import axios from 'axios';
 
 let API = "http://localhost:3000/api/";
@@ -12,6 +13,7 @@ let API = "http://localhost:3000/api/";
 function App() {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState({});
+  const [albums, setAlbums] = useState([]);
 
   return (
     <div className='App'>
@@ -22,6 +24,7 @@ function App() {
         <Link to="/account" className="nav-link">My Account</Link>
         <Link to="/login" className="nav-link">Log In</Link>
       </nav>
+      <SearchBar onSearch={(searchTerm) => (searchTerm)} />
     </header>
 
     <Routes>
