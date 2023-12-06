@@ -19,14 +19,14 @@ function App() {
   const [albums, setAlbums] = useState([]);
   const [filteredAlbums, setFilteredAlbums] = useState([]);
 
-  console.log("All Albums:", albums);
+  // console.log("All Albums:", albums);
 
-  console.log("Filtered Albums:", filteredAlbums);
+  // console.log("Filtered Albums:", filteredAlbums);
 
 
   function filterAlbums(searchTerm, albums){
-    console.log('Filtering with search term:', searchTerm);
-    console.log(albums);
+    // console.log('Filtering with search term:', searchTerm);
+    // console.log(albums);
   
     const filtered = albums.filter((album) => {
       const titleLower = album.title.toLowerCase();
@@ -34,8 +34,9 @@ function App() {
       const genreLower = album.genre.toLowerCase();
       const searchTermLower = searchTerm.toLowerCase();
   
-      console.log('Comparing:', titleLower, artistLower, genreLower, 'with', searchTermLower);
-      console.log(titleLower.includes(searchTermLower), artistLower.includes(searchTermLower), genreLower.includes(searchTermLower));
+      // test to see what the term is comparing to
+      // console.log('Comparing:', titleLower, artistLower, genreLower, 'with', searchTermLower);
+      // console.log(titleLower.includes(searchTermLower), artistLower.includes(searchTermLower), genreLower.includes(searchTermLower));
   
       return (
         titleLower.includes(searchTermLower) ||
@@ -44,7 +45,7 @@ function App() {
       );
     });
   
-    console.log('Filtered Albums:', filtered);
+    // console.log('Filtered Albums:', filtered);
     return filtered;
   };
 
@@ -68,6 +69,7 @@ function App() {
             Log In
           </Link>
         </nav>
+        <SearchBar onSearch={(searchTerm) => filterAlbums(searchTerm, albums)} albums={albums} />
       </header>
 
       <Routes>
