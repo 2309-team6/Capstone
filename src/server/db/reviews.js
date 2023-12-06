@@ -111,5 +111,5 @@ module.exports = {
   createReview,
   updateReview,
   deleteReview,
-  getUserReviewsById,
+  getUserReviewsById
 };
