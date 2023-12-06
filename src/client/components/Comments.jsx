@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 
 let API = "http://localhost:3000/api/";
 
-function Comments() {
+function Comments(props) {
   const [comment, setComment] = useState("");
 
   const navigate = useNavigate();

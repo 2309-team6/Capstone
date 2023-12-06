@@ -8,8 +8,6 @@ let API = "http://localhost:3000/api/";
 function SingleAlbum() {
   const [album, setAlbum] = useState({});
   const [reviews, setReviews] = useState([]);
-
-  const [comments, setComments] = useState({});
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -17,8 +15,16 @@ function SingleAlbum() {
   useEffect(() => {
     fetchSingleAlbum();
     fetchReviews();
-    fetchComments();
   }, []);
+
+  async function fetchUserById(id) {
+    try {
+      const { data: json } = await axios.get(`${API}/users/info/${id}`);
+      return json;
+    } catch (err) {
+      console.error("Unable to find that user: ", err.message);
+    }
+  }
 
   async function fetchSingleAlbum() {
     try {
@@ -37,16 +43,6 @@ function SingleAlbum() {
       setReviews(json);
     } catch (err) {
       console.error("Unable to find reviews: ", err.message);
-    }
-  }
-
-  async function fetchComments() {
-    try {
-      const { data: json } = await axios.get(`${API}/comments/${id}`);
-
-      setComments(json);
-    } catch (err) {
-      console.error("Unable to find comments: ", err.message);
     }
   }
 
