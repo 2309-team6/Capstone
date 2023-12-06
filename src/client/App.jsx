@@ -14,6 +14,37 @@ function App() {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState({});
   const [albums, setAlbums] = useState([]);
+  const [filteredAlbums, setFilteredAlbums] = useState([]);
+
+  console.log("All Albums:", albums);
+
+  console.log("Filtered Albums:", filteredAlbums);
+
+
+  function filterAlbums(searchTerm, albums){
+    console.log('Filtering with search term:', searchTerm);
+    console.log(albums);
+  
+    const filtered = albums.filter((album) => {
+      const titleLower = album.title.toLowerCase();
+      const artistLower = album.artist.toLowerCase();
+      const genreLower = album.genre.toLowerCase();
+      const searchTermLower = searchTerm.toLowerCase();
+  
+      console.log('Comparing:', titleLower, artistLower, genreLower, 'with', searchTermLower);
+      console.log(titleLower.includes(searchTermLower), artistLower.includes(searchTermLower), genreLower.includes(searchTermLower));
+  
+      return (
+        titleLower.includes(searchTermLower) ||
+        artistLower.includes(searchTermLower) ||
+        genreLower.includes(searchTermLower)
+      );
+    });
+  
+    console.log('Filtered Albums:', filtered);
+    return filtered;
+  };
+
 
   return (
     <div className='App'>
@@ -24,11 +55,11 @@ function App() {
         <Link to="/account" className="nav-link">My Account</Link>
         <Link to="/login" className="nav-link">Log In</Link>
       </nav>
-      <SearchBar onSearch={(searchTerm) => (searchTerm)} />
+      <SearchBar onSearch={(searchTerm) => setFilteredAlbums(filterAlbums(searchTerm, albums))} albums={albums} />
     </header>
 
     <Routes>
-      <Route path="/" element={<AllAlbums />} />
+      <Route path="/" element={<AllAlbums albums={albums} setAlbums={setAlbums} />} />
       <Route path="/albums/:id" element={<SingleAlbum />} />
       <Route path="/register" element={<Register token={token} setToken={setToken}/>} />
       <Route path="/login" element={<Login />} />
