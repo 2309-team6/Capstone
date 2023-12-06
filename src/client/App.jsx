@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
-import Login from './components/Login';
-import AllAlbums from './components/AllAlbums';
-import SingleAlbum from './components/SingleAlbum';
-import Account from './components/Account';
-import Register from './components/Register';
+import Login from "./components/Login";
+import AllAlbums from "./components/AllAlbums";
+import SingleAlbum from "./components/SingleAlbum";
+import Account from "./components/Account";
+import Register from "./components/Register";
+import AlbumReviews from "./components/Reviews";
+import Comments from "./components/Comments";
 import SearchBar from './components/SearchBar';
-import axios from 'axios';
+import axios from "axios";
+
 
 let API = "http://localhost:3000/api/";
 
@@ -47,25 +50,41 @@ function App() {
 
 
   return (
-    <div className='App'>
-    <header className="app-header">
-      <h1> <img id='comp-img' src='./computer.png'></img>Album Review Project</h1>
-      <nav>
-        <Link to="/" className="nav-link">Albums</Link>
-        <Link to="/account" className="nav-link">My Account</Link>
-        <Link to="/login" className="nav-link">Log In</Link>
-      </nav>
-      <SearchBar onSearch={(searchTerm) => setFilteredAlbums(filterAlbums(searchTerm, albums))} albums={albums} />
-    </header>
 
-    <Routes>
-      <Route path="/" element={<AllAlbums albums={albums} setAlbums={setAlbums} />} />
-      <Route path="/albums/:id" element={<SingleAlbum />} />
-      <Route path="/register" element={<Register token={token} setToken={setToken}/>} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/account" element={<Account />} />
-    </Routes>
+    <div className="App">
+      <header className="app-header">
+        <h1>
+          {" "}
+          <img id="comp-img" src="/computer.png"></img>Album Review Project
+        </h1>
+        <nav>
+          <Link to="/" className="nav-link">
+            Albums
+          </Link>
+          <Link to="/account" className="nav-link">
+            My Account
+          </Link>
+          <Link to="/login" className="nav-link">
+            Log In
+          </Link>
+        </nav>
+      </header>
 
+      <Routes>
+        <Route path="/" element={<AllAlbums albums={albums} setAlbums={setAlbums} />} />
+        <Route path="/albums/:id" element={<SingleAlbum />} />
+        <Route
+          path="/register"
+          element={<Register token={token} setToken={setToken} />}
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/albums/:id/reviews" element={<AlbumReviews />} />
+        <Route
+          path="/albums/:id/reviews/:reviewId/comments"
+          element={<Comments />}
+        />
+      </Routes>
     </div>
   );
 }

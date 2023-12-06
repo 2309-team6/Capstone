@@ -1,14 +1,15 @@
+* {
+  font-family: Georgia, 'Times New Roman', Times, serif; 
+}
+
+/* .App Website Header & Nav Bar */
 .App {
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; */
   height: 100vh; 
 }
 
 .app-header {
   margin-bottom: 20px;
-  font-size: 24px;
+  font-size: 20px;
   display: flex;
   align-items: center;
 }
@@ -41,4 +42,40 @@ nav {
   font-weight: bold; 
 }
 
-/* Add more styling for other elements if needed */
+/* Account */
+
+/* AllAlbums */
+
+/* Login */
+
+/* Register */
+
+/* Reviews */
+
+/* Single Album */
+
+/* .album-info > img {
+  border: 2px solid black;
+} */
+
+.album-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -18rem; 
+  margin-bottom: 5rem; 
+}
+
+.album-img {
+  max-width: 200px; 
+  padding-left: 4rem; 
+}
+
+.review-redirect > h3 {
+  text-align: center; 
+}
+
+.review-button {
+  display: flex;
+  justify-content: center;
+}

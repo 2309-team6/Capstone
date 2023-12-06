@@ -1,7 +1,15 @@
 const express = require("express");
 const usersRouter = express.Router();
 
-const { createUser, getUser, getUserByEmail, getAllUsers } = require("../db");
+const {
+  createUser,
+  getUser,
+  getUserByEmail,
+  getAllUsers,
+  getUserById,
+  getUserCommentsById,
+  getUserReviewsById,
+} = require("../db");
 
 const jwt = require("jsonwebtoken");
 
@@ -13,6 +21,42 @@ usersRouter.get("/", async (req, res, next) => {
     res.send({
       users,
     });
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
+// GET /api/users/info/:id
+usersRouter.get("/info/:id", async (req, res, next) => {
+  try {
+    const user = await getUserById(req.params.id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).body("Unable to find user by given id");
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
+// GET /api/users/details/:id
+// This pulls ALL of a user's review and comment history.
+usersRouter.get("/details/:id", async (req, res, next) => {
+  try {
+    const user = await getUserById(req.params.id);
+    const userReviews = await getUserReviewsById(req.params.id);
+    const userComments = await getUserCommentsById(req.params.id);
+
+    if (user) {
+      res.json({
+        details: user,
+        reviews: userReviews,
+        comments: userComments,
+      });
+    } else {
+      res.status(404).body("Unable to find user by given id");
+    }
   } catch ({ name, message }) {
     next({ name, message });
   }
@@ -62,23 +106,22 @@ usersRouter.post("/register", async (req, res, next) => {
   const { name, email, password, role } = req.body;
   try {
     const _user = await getUserByEmail(email);
-    
-    
+
     if (_user) {
       next({
         name: "UserExistsError",
         message: "A user with that email already exists",
       });
     }
-    
+
     // validation to ensure no fields are empty
-    if (name == '' || email == '' || password == ''){
-     next({
-       name: 'EmptyFieldsError',
-       message: "All fields Must be filled out",
-     });
-     // prevent form submission (stop it from getting added ot the db table)
-     event.preventDefault();
+    if (name == "" || email == "" || password == "") {
+      next({
+        name: "EmptyFieldsError",
+        message: "All fields Must be filled out",
+      });
+      // prevent form submission (stop it from getting added ot the db table)
+      event.preventDefault();
     }
 
     const user = await createUser({

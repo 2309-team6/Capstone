@@ -43,10 +43,24 @@ async function getComments() {
 
 async function getCommentById(id) {
   try {
-      const { rows } = await db.query('SELECT * FROM userComments WHERE id=$1', [id]);
-      return rows[0];
+    const { rows } = await db.query("SELECT * FROM userComments WHERE id=$1", [
+      id,
+    ]);
+    return rows;
   } catch (err) {
-      throw err;
+    throw err;
+  }
+}
+
+async function getCommentByReviewId(reviewId) {
+  try {
+    const { rows } = await db.query(
+      "SELECT * FROM userComments WHERE reviewid=$1",
+      [reviewId]
+    );
+    return rows;
+  } catch (err) {
+    throw err;
   }
 }
 
@@ -63,15 +77,33 @@ async function updateComment(id, updatedFields) {
     );
 
     if (!updatedComment || updatedComment.length === 0) {
-      throw new Error('Comment not found');
+      throw new Error("Comment not found");
     }
 
     return updatedComment[0];
   } catch (err) {
-    console.error('Unable to update comment.', err.message);
+    console.error("Unable to update comment.", err.message);
     throw err;
   }
+}
+
+async function getUserCommentsById(userId) {
+  try {
+    const { rows } = await db.query(
+      `SELECT * FROM userComments WHERE userid=${userId}`
+    );
+    return rows;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = {
+  createComment,
+  getComments,
+  deleteComment,
+  getCommentById,
+  updateComment,
+  getCommentByReviewId,
+  getUserCommentsById,
 };
-
-
-module.exports = { createComment, getComments, deleteComment, getCommentById, updateComment };
