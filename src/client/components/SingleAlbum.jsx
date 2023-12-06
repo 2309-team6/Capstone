@@ -18,15 +18,6 @@ function SingleAlbum() {
     fetchReviews();
   }, []);
 
-  async function fetchUserById(id) {
-    try {
-      const { data: json } = await axios.get(`${API}/users/info/${id}`);
-      return json;
-    } catch (err) {
-      console.error("Unable to find that user: ", err.message);
-    }
-  }
-
   async function fetchSingleAlbum() {
     try {
       const { data: json } = await axios.get(`${API}/albums/${id}`);
