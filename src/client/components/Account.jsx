@@ -86,6 +86,23 @@ function Account(props) {
     }
   }
 
+  async function deleteReview(id) {
+    try {
+      const response = await fetch(`${API}/reviews/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
+      const json = await response.json();
+
+      fetchMyAccountDetails(user.id);
+    } catch(error){
+      setError(error.message);
+    }
+  }
+
   async function editComment(id, updatedComment) {
     try {
       const response = await fetch(`${API}/comments/${id}`, {
@@ -98,7 +115,27 @@ function Account(props) {
           updatedComment,
         }),
       });
+      const json = await response.json();
+      console.log("patch request response: ", json);
 
+      fetchMyAccountDetails(user.id);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  async function editReview(id, updatedReview) {
+    try {
+      const response = await fetch(`${API}/reviews/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props?.token}`,
+        },
+        body: JSON.stringify({
+          updatedReview,
+        }),
+      });
       const json = await response.json();
       console.log("patch request response: ", json);
 
@@ -116,6 +153,19 @@ function Account(props) {
 
       {props.token ? (
         <div>
+          <h2>My Reviews</h2>
+
+          <ul>
+            {myReviews.map((review) => (
+              <li key={review?.id}>
+                <h3>{review}</h3>
+                <button onClick={() => deleteReview(review?.id)}>
+                  Delete
+                </button>
+                <button onClick={() => editReview(review?.id)}>Edit</button>
+              </li>
+            ))}
+          </ul>
           <h2>My Comments</h2>
 
           <ul>
