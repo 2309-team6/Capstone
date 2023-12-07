@@ -7,6 +7,7 @@ import Account from "./components/Account";
 import Register from "./components/Register";
 import AlbumReviews from "./components/Reviews";
 import Comments from "./components/Comments";
+import FilteredAlbums from "./components/FilteredAlbums";
 import SearchBar from "./components/SearchBar";
 import AdminFooter from "./components/AdminFooter";
 import AddAlbum from "./components/AddAlbum";
@@ -79,10 +80,6 @@ function App() {
             Log In
           </Link>
         </nav>
-        <SearchBar
-          onSearch={(searchTerm) => filterAlbums(searchTerm, albums)}
-          albums={albums}
-        />
       </header>
       {isAdmin() ? <AdminFooter token={token} user={user} /> : <></>}
 
@@ -123,7 +120,9 @@ function App() {
           path="/admin/users"
           element={<AdminUsers token={token} user={user} />}
         />
+        <Route path="/search/:searchTerm" element={<FilteredAlbums />} />
       </Routes>
+      
     </div>
   );
 }
