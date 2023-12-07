@@ -8,16 +8,19 @@ function Account({token}) {
 
   const [user, setUser] = useState({})
   const [myComments, setMyComments] = useState([])
+  const [myReviews, setMyReviews] = useState([])
 
   const [error, setError] = useState(null)
 
   useEffect (() => {
     if(token){
-      fetchMyAccount()
-      fetchMyAccountDetails(user.id)
+      fetchMyAccount();
+      console.log("user.id: ", user.id)
+      fetchMyAccountDetails(user.id);
     }
   }, [token])
 
+  // need this function to initally grab user info (user.id)
   async function fetchMyAccount(){
     try {
 
@@ -31,14 +34,15 @@ function Account({token}) {
 
       const json = await response.json()
 
-      setUser(json)
-      console.log("user: ", user)
+      console.log("user: ", json)
+      setUser(json) //maybe return here?
       
     } catch(error) {
       setError(error.message)
     }
   }
 
+  // use this function with the user.id from other function to grab comment and review data
   async function fetchMyAccountDetails(id){
     try {
 
@@ -52,10 +56,12 @@ function Account({token}) {
 
       const json = await response.json()
       
-      setMyComments(json.details.comments)
+      setMyComments(json.comments)
+      setMyReviews(json.reviews)
 
       console.log("json: ", json)
       console.log("json.comments: ", myComments)
+      console.log("json.reviews: ", myReviews)
       
     } catch(error) {
       setError(error.message)
@@ -84,7 +90,7 @@ function Account({token}) {
 
   async function editComment(id){
     try{
-      const response = await fetch (`${API_URL}/comments/${id}`, {
+      const response = await fetch (`${API}/comments/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -119,15 +125,15 @@ function Account({token}) {
 
           <h2>My Comments</h2>
           
-          {/* <ul>
+          <ul>
             {myComments.map(comment=>(
-              <li key = {comment.id}>
-                <h3>{comment.content}</h3>
-                <button onClick={() => deleteComment(comment.id)}>Delete</button>
-                <button onClick={() => editComment(comment.id)}>Edit</button>
+              <li key = {comment?.id}>
+                <h3>{comment?.content}</h3>
+                <button onClick={() => deleteComment(comment?.id)}>Delete</button>
+                <button onClick={() => editComment(comment?.id)}>Edit</button>
               </li>
             ))}
-          </ul> */}
+          </ul>
 
 
 
