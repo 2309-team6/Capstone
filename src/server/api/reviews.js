@@ -10,6 +10,7 @@ const {
 } = require("../db/reviews");
 const { getCommentById, getCommentByReviewId } = require("../db/comments");
 const { isLoggedIn } = require("./roles");
+const { getUserById } = require("../db");
 
 // const { requireUser, requiredNotSent } = require('./utils')
 
@@ -30,6 +31,13 @@ reviewsRouter.get("/:id", async (req, res, next) => {
     for (let x = 0; x < reviews.length; x++) {
       const reviewComments = await getCommentByReviewId(reviews[x].id);
       reviews[x].comments = reviewComments;
+      const users = [];
+      for (let y = 0; y < reviews[x].comments.length; y++) {
+        const currentComment = reviews[x].comments[y];
+        const user = await getUserById(currentComment.userid);
+        users.push(user);
+      }
+      reviews[x].users = users;
     }
 
     res.send(reviews);

@@ -47,36 +47,241 @@ nav {
 /* AllAlbums */
 
 /* Login */
+.login-container {
+  margin: 1rem 5rem;
+}
+
+.login-container > h2 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-email {
+  margin-bottom: 1rem; 
+}
+
+.login-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-options > button {
+  margin: 1.5rem 0;
+  background-color: #a3b899; 
+  border: 2px solid #a3b899; 
+  color: white; 
+}
+
+.login-options > button:hover {
+  background-color: white; 
+  border: 2px solid #a3b899; 
+  color: #a3b899; 
+  font-weight: bold;
+}
+
+.login-options > a {
+  color: #a3b899; 
+}
+
+.login-options > a:hover {
+  background-color: white; 
+  color: #a3b899; 
+  font-weight: bold;
+}
+
 
 /* Register */
 
 /* Reviews */
 
 /* Single Album */
-
-/* .album-info > img {
-  border: 2px solid black;
-} */
-
 .album-info {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -18rem; 
+  margin-top: -21.5rem; 
   margin-bottom: 5rem; 
+}
+
+.album-title {
+  margin-bottom: -.5rem;
+}
+
+.album-rating {
+  margin: 2rem 2rem;
+}
+
+.album-genre {
+  margin-bottom: -.5rem; 
 }
 
 .single-album-img > img {
   padding-left: 4rem; 
-  width: 350px;
-  height: 350px;
+  /* width: 350px;
+  height: 350px; */
+  width: 24rem;
+  height: 24rem;
+}
+
+.review-redirect {
+  margin-top: 1rem;
+  margin-bottom: 1.2rem; 
 }
 
 .review-redirect > h3 {
+  margin-top: -.8rem;
   text-align: center; 
 }
 
 .review-button {
   display: flex;
   justify-content: center;
+}
+
+.review-submit {
+  background-color: #a3b899; 
+  border: 2px solid #a3b899; 
+  color: white; 
+  font-size: 1rem;
+}
+
+.review-submit:hover {
+  background-color: white; 
+  border: 2px solid #a3b899; 
+  color: #a3b899; 
+  font-weight: bold;
+}
+
+.single-rating {
+  border-bottom: 1px solid black; 
+}
+
+.review-date {
+  font-size: .8rem;
+} 
+
+.star-rating {
+  margin-top: 1rem; 
+  color: #f2be49;
+}
+
+.single-rating button {
+  margin-bottom: 1rem; 
+}
+
+.comment-block {
+  /* border: 2px solid black; */
+  padding-left: 3rem; 
+}
+
+.single-comment {
+  border-bottom: 1px solid black; 
+}
+
+.comment-submit {
+  background-color: #a3b899; 
+  border: 2px solid #a3b899; 
+  color: white; 
+}
+
+.comment-submit:hover {
+  background-color: white; 
+  border: 2px solid #a3b899; 
+  color: #a3b899; 
+  font-weight: bold;
+}
+
+/* Single Album Admin Tasks */
+.album-edit {
+  background-color: #7395ae;
+  border: 1px solid #7395ae; 
+  color: white;
+}
+
+.album-edit:hover {
+  background-color: white;
+  border: 1px solid #7395ae; 
+  color: #7395ae;
+}
+
+/* Album Review Form */
+.star-rating-2 {
+  margin: 1rem 1rem; 
+  color: #f2be49;
+}
+
+.review-title {
+  font-size: 1.5rem;
+}
+
+.review-form-button > button {
+  margin: 1rem 0;
+  background-color: #a3b899; 
+  border: 2px solid #a3b899; 
+  color: white; 
+}
+.review-form-button > button:hover {
+  background-color: white; 
+  border: 2px solid #a3b899; 
+  color: #a3b899; 
+  font-weight: bold;
+}
+
+/* Comments Form */
+.comment-submit-button > button {
+  
+  background-color: #a3b899; 
+  border: 2px solid #a3b899; 
+  color: white; 
+}
+.comment-submit-button > button:hover {
+  background-color: white; 
+  border: 2px solid #a3b899; 
+  color: #a3b899; 
+  font-weight: bold;
+}
+
+/* Admin Footer  */
+.admin-footer {
+  background-color: #7395ae;
+  padding: 0.5rem;
+  margin-bottom: .5rem;
+}
+
+.footer-link-1 {
+  color: white; 
+  margin-left: 40rem;  
+}
+
+.footer-link-2 {
+  color: white; 
+  margin-left: 5rem; 
+}
+
+/* Admin Add Album */
+.add-album-form > button { 
+  margin: 1rem 0;
+  background-color: #7395ae; 
+  border: 2px solid #7395ae; 
+  color: white; 
+}
+
+.add-album-form > button:hover { 
+  background-color: white; 
+  border: 2px solid #7395ae; 
+  color: #7395ae; 
+  font-weight: bold;
+}
+
+/* Admin All Users */
+.admin-container > ul > li {
+  list-style: none;
+  border-bottom: 1px solid black;
 }

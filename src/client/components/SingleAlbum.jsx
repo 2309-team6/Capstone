@@ -37,7 +37,7 @@ function SingleAlbum(props) {
       const { data: json } = await axios.get(`${API}/reviews/${id}`);
 
       setReviews(json);
-
+      console.log(json);
       getAvgRating(json);
     } catch (err) {
       console.error("Unable to find reviews: ", err.message);
@@ -120,9 +120,9 @@ function SingleAlbum(props) {
         <img src={album.imgurl} />
       </div>
       <div className="album-info">
-        <h1>{album.title}</h1>
-        <h3>By: {album.artist}</h3>
-        <h3>Average Rating: {avgRating}</h3>
+        <h1 className="album-title">{album.title}</h1>
+        <h2 className="album-artist">By: {album.artist}</h2>
+        <h3 className="album-rating">Average Rating: {avgRating}</h3>
 
         {isAdmin() ? (
           <div className="genre-edit">
@@ -132,56 +132,75 @@ function SingleAlbum(props) {
               className="edit-input"
               onChange={(event) => setGenre(event.target.value)}
             ></input>
-            <button onClick={() => onSaveAlbum(album.id)}>Save Changes</button>
+            <button
+              className="album-edit"
+              onClick={() => onSaveAlbum(album.id)}
+            >
+              Save Changes
+            </button>
           </div>
         ) : (
-          <h4>Genre: {album.genre}</h4>
+          <h4 className="album-genre">Genre: {album.genre}</h4>
         )}
 
-        <h4>Release Date: {album.releasedate}</h4>
+        <h4 className="album-date">Release Year: {album.releasedate}</h4>
+
         {isAdmin() ? (
-          <button onClick={() => onDelete(album.id)}>Delete Album</button>
+          <button className="album-edit" onClick={() => onDelete(album.id)}>
+            Delete Album
+          </button>
         ) : (
           <></>
         )}
       </div>
+
       <hr></hr>
+
       <div className="review-redirect">
         <h2>Ratings & Reviews</h2>
         <h3>What do you think?</h3>
         <div className="review-button">
-          <button onClick={redirectToReview}>Write a Review</button>
+          <button onClick={redirectToReview} className="review-submit">
+            Write a Review
+          </button>
         </div>
       </div>
       <hr></hr>
       {reviews.map((review) => {
         return (
           <div className="review-info" key={review.id}>
-            <div>
-              <h4>Rating: </h4>
-              <Rating
-                id="rating"
-                value={review.rating}
-                readOnly
-                cancel={false}
-              />
+            <div className="single-rating">
+              <div className="star-rating">
+                {/* <h4>Rating: </h4> */}
+                <Rating
+                  id="rating"
+                  value={review.rating}
+                  readOnly
+                  cancel={false}
+                />
+              </div>
+
+              {/* <p>Name: {review.userid}</p> */}
+              <p>{review.comment}</p>
+              <p className="review-date">Date: {review.reviewdate}</p>
+              <button
+                className="comment-submit"
+                value={review.id}
+                onClick={(event) => onCommentClick(event.target.value)}
+              >
+                Comment
+              </button>
             </div>
-            <p>Review: {review.comment}</p>
-            <p>Review Date: {review.reviewdate}</p>
-            <button
-              value={review.id}
-              onClick={(event) => onCommentClick(event.target.value)}
-            >
-              Comment
-            </button>
-            {review.comments.map((comment) => {
-              return (
-                <div key={comment.id}>
-                  <h4>{comment.userid}</h4>
-                  <p>{comment.content}</p>
-                </div>
-              );
-            })}
+            <div className="comment-block">
+              {review.comments.map((comment) => {
+                return (
+                  <div key={comment.id} className="single-comment">
+                    <h4>{comment.userid}</h4>
+                    <p>{comment.content}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         );
       })}
