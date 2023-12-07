@@ -132,7 +132,12 @@ function SingleAlbum(props) {
               className="edit-input"
               onChange={(event) => setGenre(event.target.value)}
             ></input>
-            <button onClick={() => onSaveAlbum(album.id)}>Save Changes</button>
+            <button
+              className="album-edit"
+              onClick={() => onSaveAlbum(album.id)}
+            >
+              Save Changes
+            </button>
           </div>
         ) : (
           <h4 className="album-genre">Genre: {album.genre}</h4>
@@ -141,7 +146,9 @@ function SingleAlbum(props) {
         <h4 className="album-date">Release Year: {album.releasedate}</h4>
 
         {isAdmin() ? (
-          <button onClick={() => onDelete(album.id)}>Delete Album</button>
+          <button className="album-edit" onClick={() => onDelete(album.id)}>
+            Delete Album
+          </button>
         ) : (
           <></>
         )}

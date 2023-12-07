@@ -198,6 +198,19 @@ nav {
   font-weight: bold;
 }
 
+/* Single Album Admin Tasks */
+.album-edit {
+  background-color: #7395ae;
+  border: 1px solid #7395ae; 
+  color: white;
+}
+
+.album-edit:hover {
+  background-color: white;
+  border: 1px solid #7395ae; 
+  color: #7395ae;
+}
+
 /* Album Review Form */
 .star-rating-2 {
   margin: 1rem 1rem; 
@@ -223,7 +236,7 @@ nav {
 
 /* Comments Form */
 .comment-submit-button > button {
-  margin: 1rem 0;
+  
   background-color: #a3b899; 
   border: 2px solid #a3b899; 
   color: white; 
@@ -233,4 +246,42 @@ nav {
   border: 2px solid #a3b899; 
   color: #a3b899; 
   font-weight: bold;
+}
+
+/* Admin Footer  */
+.admin-footer {
+  background-color: #7395ae;
+  padding: 0.5rem;
+  margin-bottom: .5rem;
+}
+
+.footer-link-1 {
+  color: white; 
+  margin-left: 40rem;  
+}
+
+.footer-link-2 {
+  color: white; 
+  margin-left: 5rem; 
+}
+
+/* Admin Add Album */
+.add-album-form > button { 
+  margin: 1rem 0;
+  background-color: #7395ae; 
+  border: 2px solid #7395ae; 
+  color: white; 
+}
+
+.add-album-form > button:hover { 
+  background-color: white; 
+  border: 2px solid #7395ae; 
+  color: #7395ae; 
+  font-weight: bold;
+}
+
+/* Admin All Users */
+.admin-container > ul > li {
+  list-style: none;
+  border-bottom: 1px solid black;
 }
