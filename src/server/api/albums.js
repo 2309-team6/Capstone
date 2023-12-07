@@ -1,8 +1,12 @@
 const express = require("express");
 const albumRouter = express.Router();
 
-const { getAlbum, deleteAlbumById } = require("../db/albums");
-const { getAllAlbums } = require("../db/albums");
+const {
+  getAlbum,
+  deleteAlbumById,
+  getAllAlbums,
+  createAlbum,
+} = require("../db/albums");
 const { isLoggedIn } = require("./roles");
 
 // GET /api/albums/:id
@@ -23,6 +27,34 @@ albumRouter.get("/", async (req, res, next) => {
   } catch (error) {
     console.error("Could not get all albums: ", err.message);
     throw err;
+  }
+});
+
+// POST
+albumRouter.post("/", isLoggedIn("admin"), async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const { title, artist, genre, releaseDate, imgUrl } = req.body;
+
+    if (!title) {
+      return res
+        .status(400)
+        .json({ message: "Title is required to add album." });
+    }
+
+    const newAlbum = await createAlbum({
+      title: title,
+      artist: artist,
+      genre: genre,
+      releaseDate: releaseDate,
+      imgUrl: imgUrl,
+    });
+
+    res
+      .status(201)
+      .json({ message: "Album added successfully", album: newAlbum });
+  } catch (err) {
+    next(err);
   }
 });
 
