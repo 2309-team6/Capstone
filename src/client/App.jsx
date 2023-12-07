@@ -11,6 +11,7 @@ import SearchBar from "./components/SearchBar";
 import AdminFooter from "./components/AdminFooter";
 import AddAlbum from "./components/AddAlbum";
 import axios from "axios";
+import AdminUsers from "./components/AdminUsers";
 
 let API = "http://localhost:3000/api/";
 
@@ -116,6 +117,10 @@ function App() {
         <Route
           path="/admin/album"
           element={<AddAlbum token={token} user={user} />}
+        />
+        <Route
+          path="/admin/users"
+          element={<AdminUsers token={token} user={user} />}
         />
       </Routes>
 

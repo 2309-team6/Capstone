@@ -1,5 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
+const { isLoggedIn } = require("./roles");
 
 const {
   createUser,
@@ -14,7 +15,7 @@ const {
 const jwt = require("jsonwebtoken");
 
 // GET /api/users/
-usersRouter.get("/", async (req, res, next) => {
+usersRouter.get("/", isLoggedIn("admin"), async (req, res, next) => {
   try {
     const users = await getAllUsers();
 

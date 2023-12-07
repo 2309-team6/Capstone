@@ -6,6 +6,9 @@ function AdminFooter() {
       <Link to="/admin/album" className="footer-link">
         Add Album
       </Link>
+      <Link to="/admin/users" className="footer-link">
+        All Users
+      </Link>
     </footer>
   );
 }
