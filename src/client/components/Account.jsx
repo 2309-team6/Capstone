@@ -4,7 +4,7 @@ import axios from "axios";
 
 let API = "http://localhost:3000/api/";
 
-function Account({token}) {
+function Account(props) {
 
   const [user, setUser] = useState({})
   const [myComments, setMyComments] = useState([])
@@ -13,12 +13,22 @@ function Account({token}) {
   const [error, setError] = useState(null)
 
   useEffect (() => {
-    if(token){
-      fetchMyAccount();
-      console.log("user.id: ", user.id)
-      fetchMyAccountDetails(user.id);
-    }
+      // tokenTest()
+      if (props) {
+        fetchMyAccount();
+        console.log("user.id: ", user.id)
+        fetchMyAccountDetails(user.id);
+      }
+    
   }, [token])
+
+
+  async function tokenTest (){
+    if(props){
+      fetchMyAccount()
+      fetchMyAccountDetails()
+    }
+  }
 
   // need this function to initally grab user info (user.id)
   async function fetchMyAccount(){
@@ -115,33 +125,30 @@ function Account({token}) {
 
   return (
 
-    <div className='account-page'>
+    <div className='account-page-container'>
 
       {error && <p>{error}</p>}
-      {token ?
        
-        <div>
-          <h1>Welcome, {user.name}!</h1>
-
-          <h2>My Comments</h2>
+          <h1>Welcome, {user.name}</h1>
           
-          <ul>
-            {myComments.map(comment=>(
-              <li key = {comment?.id}>
-                <h3>{comment?.content}</h3>
-                <button onClick={() => deleteComment(comment?.id)}>Delete</button>
-                <button onClick={() => editComment(comment?.id)}>Edit</button>
-              </li>
-            ))}
-          </ul>
+          {token ? 
+            <div>
+              <h2>My Comments</h2>
+            
+              <ul>
+                {myComments.map(comment=>(
+                  <li key = {comment?.id}>
+                    <h3>{comment}</h3>
+                    <button onClick={() => deleteComment(comment?.id)}>Delete</button>
+                    <button onClick={() => editComment(comment?.id)}>Edit</button>
+                  </li>
+               ))}
+              </ul>
 
-
-
-        </div>
-        :
-        <p>It seems you are not logged in, click here: <Link to='/login'>Login</Link></p>
-    
-      }
+            </div>
+            :
+            <p>It seems you are not logged in, click here: <Link to='/login'>Login</Link></p>
+          }
 
     </div>
 
