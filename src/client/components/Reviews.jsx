@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 
 let API = "http://localhost:3000/api/";
 
-function AlbumReviews() {
+function AlbumReviews(props) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const navigate = useNavigate();
@@ -17,12 +17,8 @@ function AlbumReviews() {
   useEffect(() => {}, []);
 
   async function handleSubmit() {
-    // Implement your logic to submit the review data
-    console.log("Rating:", rating);
-    console.log("Comment:", comment);
-
     const postData = {
-      userId: 1, // Get real userID. Need log in.
+      userId: props?.user?.id,
       albumId: id,
       rating: rating,
       comment: comment,
@@ -30,7 +26,11 @@ function AlbumReviews() {
     };
 
     try {
-      const response = await axios.post(`${API}/reviews`, postData);
+      const response = await axios.post(`${API}/reviews`, postData, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         navigate(`/albums/${id}`);
@@ -42,16 +42,31 @@ function AlbumReviews() {
 
   return (
     <div className="reviews-form">
-      <div className="p-field">
-        <label htmlFor="rating">Rating: </label>
-        <Rating
-          id="rating"
-          value={rating}
-          onChange={(e) => setRating(e.value ?? 0)}
-          cancel={false}
-        />
+      <div className="review-form-rating">
+        <label htmlFor="rating" className="review-title">
+          Rating & Review{" "}
+        </label>
+        <p>Add your star rating and review below.</p>
+        <div className="star-rating-2">
+          <Rating
+            id="rating"
+            value={rating}
+            onChange={(e) => setRating(e.value ?? 0)}
+            cancel={false}
+          />
+        </div>
       </div>
-      <div className="p-field">
+
+      {/* <div className="review-form-name">
+        <label htmlFor="comment">Name: </label>
+        <InputText
+          id="comment"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      </div> */}
+
+      <div className="review-form-text">
         <label htmlFor="comment">Review: </label>
         <InputText
           id="comment"
@@ -59,7 +74,7 @@ function AlbumReviews() {
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
-      <div className="p-field">
+      <div className="review-form-button">
         <Button label="Submit" onClick={handleSubmit} />
       </div>
     </div>

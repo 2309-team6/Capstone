@@ -5,11 +5,12 @@ import { Rating } from "primereact/rating";
 
 let API = "http://localhost:3000/api/";
 
-function SingleAlbum() {
+function SingleAlbum(props) {
   const [album, setAlbum] = useState({});
   const [reviews, setReviews] = useState([]);
-
-  const [comments, setComments] = useState({});
+  const [avgRating, setAvgRating] = useState(0);
+  const [user, setUser] = useState({});
+  const [genre, setGenre] = useState("");
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -17,7 +18,7 @@ function SingleAlbum() {
   useEffect(() => {
     fetchSingleAlbum();
     fetchReviews();
-    fetchComments();
+    fetchUser();
   }, []);
 
   async function fetchSingleAlbum() {
@@ -25,6 +26,7 @@ function SingleAlbum() {
       const { data: json } = await axios.get(`${API}/albums/${id}`);
 
       setAlbum(json);
+      setGenre(json.genre);
     } catch (err) {
       console.error("Unable to find that album: ", err.message);
     }
@@ -35,18 +37,9 @@ function SingleAlbum() {
       const { data: json } = await axios.get(`${API}/reviews/${id}`);
 
       setReviews(json);
+      getAvgRating(json);
     } catch (err) {
       console.error("Unable to find reviews: ", err.message);
-    }
-  }
-
-  async function fetchComments() {
-    try {
-      const { data: json } = await axios.get(`${API}/comments/${id}`);
-
-      setComments(json);
-    } catch (err) {
-      console.error("Unable to find comments: ", err.message);
     }
   }
 
@@ -54,59 +47,160 @@ function SingleAlbum() {
     navigate(`/albums/${id}/reviews/${reviewId}/comments`);
   }
 
+  async function onDelete(albumId) {
+    const response = await axios.delete(`${API}/albums/${albumId}`, {
+      headers: {
+        Authorization: `Bearer ${props?.token}`,
+      },
+    });
+    if (response.status >= 200 && response.status < 300) {
+      navigate("/");
+    }
+  }
+
+  async function fetchUser() {
+    try {
+      const { data: json } = await axios.get(`${API}/users/info`, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
+      setUser(json);
+    } catch (err) {}
+  }
+
+  async function onSaveAlbum(id) {
+    try {
+      const albumToUpdate = {
+        title: album.title,
+        artist: album.artist,
+        genre: genre,
+        releaseDate: album.releasedate,
+        imgUrl: album.imgurl,
+      };
+      const response = await axios.patch(`${API}/albums/${id}`, albumToUpdate, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
+      if (response.status >= 200 && response.status < 300) {
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Unable to update album.", err.message);
+    }
+  }
+
+  function getAvgRating(reviews) {
+    if (reviews.length === 0) {
+      return 0;
+    }
+    const sumReviews = reviews.reduce((acc, curr) => {
+      return acc + curr.rating;
+    }, 0);
+    const averageRating = sumReviews / reviews.length;
+    setAvgRating(averageRating.toFixed(2));
+  }
+
   function redirectToReview() {
     event.preventDefault();
     navigate(`/albums/${id}/reviews`);
   }
 
+  function getUserNameById(users, userId) {
+    return users.find((user) => user?.id === userId)?.name;
+  }
+
+  function isAdmin() {
+    return user.role === "ADMIN";
+  }
+
   return (
     <div className="single-album">
-      <div className="album-img">
+      <div className="single-album-img">
         <img src={album.imgurl} />
       </div>
       <div className="album-info">
-        <h1>{album.title}</h1>
-        <h3>By: {album.artist}</h3>
-        <h4>Genre: {album.genre}</h4>
-        <h4>Release Date: {album.releasedate}</h4>
+        <h1 className="album-title">{album.title}</h1>
+        <h2 className="album-artist">By: {album.artist}</h2>
+        <h3 className="album-rating">Average Rating: {avgRating}</h3>
+
+        {isAdmin() ? (
+          <div className="genre-edit">
+            <label>Genre: </label>
+            <input
+              value={genre}
+              className="edit-input"
+              onChange={(event) => setGenre(event.target.value)}
+            ></input>
+            <button
+              className="album-edit"
+              onClick={() => onSaveAlbum(album.id)}
+            >
+              Save Changes
+            </button>
+          </div>
+        ) : (
+          <h4 className="album-genre">Genre: {album.genre}</h4>
+        )}
+
+        <h4 className="album-date">Release Year: {album.releasedate}</h4>
+
+        {isAdmin() ? (
+          <button className="album-edit" onClick={() => onDelete(album.id)}>
+            Delete Album
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
+
       <hr></hr>
+
       <div className="review-redirect">
         <h2>Ratings & Reviews</h2>
         <h3>What do you think?</h3>
         <div className="review-button">
-          <button onClick={redirectToReview}>Write a Review</button>
+          <button onClick={redirectToReview} className="review-submit">
+            Write a Review
+          </button>
         </div>
       </div>
       <hr></hr>
       {reviews.map((review) => {
         return (
           <div className="review-info" key={review.id}>
-            <div>
-              <h4>Rating: </h4>
-              <Rating
-                id="rating"
-                value={review.rating}
-                readOnly
-                cancel={false}
-              />
+            <div className="single-rating">
+              <div className="star-rating">
+                {/* <h4>Rating: </h4> */}
+                <Rating
+                  id="rating"
+                  value={review.rating}
+                  readOnly
+                  cancel={false}
+                />
+              </div>
+              <h4>{getUserNameById(review.users, review.userid)}</h4>
+              <p>{review.comment}</p>
+              <p className="review-date">Date: {review.reviewdate}</p>
+              <button
+                className="comment-submit"
+                value={review.id}
+                onClick={(event) => onCommentClick(event.target.value)}
+              >
+                Comment
+              </button>
             </div>
-            <p>Review: {review.comment}</p>
-            <p>Review Date: {review.reviewdate}</p>
-            <button
-              value={review.id}
-              onClick={(event) => onCommentClick(event.target.value)}
-            >
-              Comment
-            </button>
-            {review.comments.map((comment) => {
-              return (
-                <div key={comment.id}>
-                  <h4>{comment.userid}</h4>
-                  <p>{comment.content}</p>
-                </div>
-              );
-            })}
+            <div className="comment-block">
+              {review.comments.map((comment) => {
+                return (
+                  <div key={comment.id} className="single-comment">
+                    <h4>{getUserNameById(review.users, comment.userid)}</h4>
+                    <p>{comment.content}</p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         );
       })}

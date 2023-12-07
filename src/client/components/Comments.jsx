@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 
 let API = "http://localhost:3000/api/";
 
-function Comments() {
+function Comments(props) {
   const [comment, setComment] = useState("");
 
   const navigate = useNavigate();
@@ -16,13 +16,17 @@ function Comments() {
 
   async function handleSubmit() {
     const postData = {
-      userId: 1, // Get real userID. Need log in.
+      userId: props?.user?.id,
       reviewId: reviewId,
       content: comment,
     };
 
     try {
-      const response = await axios.post(`${API}/comments`, postData);
+      const response = await axios.post(`${API}/comments`, postData, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         navigate(`/albums/${id}`);
@@ -34,7 +38,8 @@ function Comments() {
 
   return (
     <div className="reviews-form">
-      <div className="p-field">
+      <div className="review-from-entry">
+        <h2>Add a Comment to a Review</h2>
         <label htmlFor="comment">Comment: </label>
         <input
           type="text"
@@ -43,7 +48,7 @@ function Comments() {
           onChange={(e) => setComment(e.target.value)}
         ></input>
       </div>
-      <div className="p-field">
+      <div className="comment-submit-button">
         <button label="Submit" onClick={handleSubmit}>
           Submit
         </button>
