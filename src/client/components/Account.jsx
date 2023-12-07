@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 
-function Account({user}) {
+function Account({token}) {
+  const [user, setUser] = useState({})
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
@@ -10,13 +11,24 @@ function Account({user}) {
   }, []);
 
   async function fetchReviews() {
-    let API = `http://localhost:3000/api/users/details/${user}`;
-
-    try {
-      const { data: response } = await axios.get(API);
-      setComments(response.reviews);
-    } catch (error) {
-      console.error(error.message);
+    let API = `http://localhost:3000/api/users/info`;
+    if (token) {
+      try { const response = await fetch(`${API}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        const result = await response.json();
+        console.log(result);
+        setUser(result)
+        console.log(result.reviews)
+        setReviews(result.reviews)
+      } catch (error) {
+        console.error(error.message);
+      }
+    } else {
+      console.log('fetchReviewsElseMessage - no token dawg!')
     }
   }
 
