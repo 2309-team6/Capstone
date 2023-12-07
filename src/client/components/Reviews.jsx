@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 
 let API = "http://localhost:3000/api/";
 
-function AlbumReviews() {
+function AlbumReviews(props) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const navigate = useNavigate();
@@ -17,10 +17,6 @@ function AlbumReviews() {
   useEffect(() => {}, []);
 
   async function handleSubmit() {
-    // Implement your logic to submit the review data
-    console.log("Rating:", rating);
-    console.log("Comment:", comment);
-
     const postData = {
       userId: 1, // Get real userID. Need log in.
       albumId: id,
@@ -30,7 +26,11 @@ function AlbumReviews() {
     };
 
     try {
-      const response = await axios.post(`${API}/reviews`, postData);
+      const response = await axios.post(`${API}/reviews`, postData, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         navigate(`/albums/${id}`);

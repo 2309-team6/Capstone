@@ -1,5 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
+const { isLoggedIn } = require("./roles");
 
 const {
   createUser,
@@ -14,13 +15,27 @@ const {
 const jwt = require("jsonwebtoken");
 
 // GET /api/users/
-usersRouter.get("/", async (req, res, next) => {
+usersRouter.get("/", isLoggedIn("admin"), async (req, res, next) => {
   try {
     const users = await getAllUsers();
 
     res.send({
       users,
     });
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
+// GET /api/users/info
+usersRouter.get("/info", async (req, res, next) => {
+  try {
+    const user = await getUserById(req.user.id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).body("Unable to find user by given id");
+    }
   } catch ({ name, message }) {
     next({ name, message });
   }

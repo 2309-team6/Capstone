@@ -5,11 +5,12 @@ import { Rating } from "primereact/rating";
 
 let API = "http://localhost:3000/api/";
 
-function SingleAlbum() {
+function SingleAlbum(props) {
   const [album, setAlbum] = useState({});
   const [reviews, setReviews] = useState([]);
-
-  const [comments, setComments] = useState({});
+  const [avgRating, setAvgRating] = useState(0);
+  const [user, setUser] = useState({});
+  const [genre, setGenre] = useState("");
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -17,7 +18,7 @@ function SingleAlbum() {
   useEffect(() => {
     fetchSingleAlbum();
     fetchReviews();
-    fetchComments();
+    fetchUser();
   }, []);
 
   async function fetchSingleAlbum() {
@@ -25,6 +26,7 @@ function SingleAlbum() {
       const { data: json } = await axios.get(`${API}/albums/${id}`);
 
       setAlbum(json);
+      setGenre(json.genre);
     } catch (err) {
       console.error("Unable to find that album: ", err.message);
     }
@@ -35,18 +37,10 @@ function SingleAlbum() {
       const { data: json } = await axios.get(`${API}/reviews/${id}`);
 
       setReviews(json);
+
+      getAvgRating(json);
     } catch (err) {
       console.error("Unable to find reviews: ", err.message);
-    }
-  }
-
-  async function fetchComments() {
-    try {
-      const { data: json } = await axios.get(`${API}/comments/${id}`);
-
-      setComments(json);
-    } catch (err) {
-      console.error("Unable to find comments: ", err.message);
     }
   }
 
@@ -54,21 +48,102 @@ function SingleAlbum() {
     navigate(`/albums/${id}/reviews/${reviewId}/comments`);
   }
 
+  async function onDelete(albumId) {
+    const response = await axios.delete(`${API}/albums/${albumId}`, {
+      headers: {
+        Authorization: `Bearer ${props?.token}`,
+      },
+    });
+    if (response.status >= 200 && response.status < 300) {
+      navigate("/");
+    }
+  }
+
+  async function fetchUser() {
+    try {
+      const { data: json } = await axios.get(`${API}/users/info`, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
+      setUser(json);
+    } catch (err) {
+      console.error("Unable to retrieve user.", err.message);
+    }
+  }
+
+  async function onSaveAlbum(id) {
+    try {
+      const albumToUpdate = {
+        title: album.title,
+        artist: album.artist,
+        genre: genre,
+        releaseDate: album.releasedate,
+        imgUrl: album.imgurl,
+      };
+      const response = await axios.patch(`${API}/albums/${id}`, albumToUpdate, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
+      if (response.status >= 200 && response.status < 300) {
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Unable to update album.", err.message);
+    }
+  }
+
+  function getAvgRating(reviews) {
+    if (reviews.length === 0) {
+      return 0;
+    }
+    const sumReviews = reviews.reduce((acc, curr) => {
+      return acc + curr.rating;
+    }, 0);
+    const averageRating = sumReviews / reviews.length;
+    setAvgRating(averageRating.toFixed(2));
+  }
+
   function redirectToReview() {
     event.preventDefault();
     navigate(`/albums/${id}/reviews`);
   }
 
+  function isAdmin() {
+    return user.role === "ADMIN";
+  }
+
   return (
     <div className="single-album">
-      <div className="album-img">
+      <div className="single-album-img">
         <img src={album.imgurl} />
       </div>
       <div className="album-info">
         <h1>{album.title}</h1>
         <h3>By: {album.artist}</h3>
-        <h4>Genre: {album.genre}</h4>
+        <h3>Average Rating: {avgRating}</h3>
+
+        {isAdmin() ? (
+          <div className="genre-edit">
+            <label>Genre: </label>
+            <input
+              value={genre}
+              className="edit-input"
+              onChange={(event) => setGenre(event.target.value)}
+            ></input>
+            <button onClick={() => onSaveAlbum(album.id)}>Save Changes</button>
+          </div>
+        ) : (
+          <h4>Genre: {album.genre}</h4>
+        )}
+
         <h4>Release Date: {album.releasedate}</h4>
+        {isAdmin() ? (
+          <button onClick={() => onDelete(album.id)}>Delete Album</button>
+        ) : (
+          <></>
+        )}
       </div>
       <hr></hr>
       <div className="review-redirect">

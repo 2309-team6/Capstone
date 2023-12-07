@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 
 let API = "http://localhost:3000/api/";
 
-function Comments() {
+function Comments(props) {
   const [comment, setComment] = useState("");
 
   const navigate = useNavigate();
@@ -22,7 +22,11 @@ function Comments() {
     };
 
     try {
-      const response = await axios.post(`${API}/comments`, postData);
+      const response = await axios.post(`${API}/comments`, postData, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
 
       if (response.status >= 200 && response.status < 300) {
         navigate(`/albums/${id}`);
