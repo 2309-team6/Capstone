@@ -15,12 +15,6 @@ function SearchBar({ onSearch, albums }) {
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
-
   return (
     <div className="search-bar">
       <input
