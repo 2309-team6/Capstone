@@ -91,6 +91,22 @@ function Account(props) {
       setError(error.message);
     }
   }
+  async function deleteReview(id) {
+    try {
+      const response = await fetch(`${API}/reviews/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
+      const json = await response.json();
+
+      fetchMyAccountDetails(user.id);
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   async function editComment(id, updatedComment) {
     try {
@@ -122,18 +138,33 @@ function Account(props) {
 
       {props.token ? (
         <div>
-          <h2>My Comments</h2>
+          <div className="comment-history">
+            <h2>My Comments</h2>
+            <ul>
+              {myComments.map((comment) => (
+                <li key={comment?.id}>
+                  <h3>{comment.content}</h3>
+                  <button onClick={() => deleteComment(comment?.id)}>
+                    Delete Comment
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="review-history">
+          <h2>My Reviews</h2>
           <ul>
-            {myComments.map((comment) => (
-              <li key={comment?.id}>
-                <h3>{comment.content}</h3>
-                <button onClick={() => deleteComment(comment?.id)}>
-                  Delete
+            {myReviews.map((review) => (
+              <li key={review?.id}>
+                <h3>{review.content}</h3>
+                <button onClick={() => deleteReview(review?.id)}>
+                  Delete Review
                 </button>
               </li>
             ))}
           </ul>
         </div>
+      </div>
       ) : (
         <p>
           It seems you are not logged in, click here:{" "}
