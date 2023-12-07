@@ -38,7 +38,8 @@ function Comments(props) {
 
   return (
     <div className="reviews-form">
-      <div className="p-field">
+      <div className="review-from-entry">
+        <h2>Add a Comment to a Review</h2>
         <label htmlFor="comment">Comment: </label>
         <input
           type="text"
@@ -47,7 +48,7 @@ function Comments(props) {
           onChange={(e) => setComment(e.target.value)}
         ></input>
       </div>
-      <div className="p-field">
+      <div className="comment-submit-button">
         <button label="Submit" onClick={handleSubmit}>
           Submit
         </button>
