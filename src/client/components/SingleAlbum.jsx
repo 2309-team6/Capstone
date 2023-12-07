@@ -5,10 +5,11 @@ import { Rating } from "primereact/rating";
 
 let API = "http://localhost:3000/api/";
 
-function SingleAlbum() {
+function SingleAlbum(props) {
   const [album, setAlbum] = useState({});
   const [reviews, setReviews] = useState([]);
   const [avgRating, setAvgRating] = useState(0);
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -16,6 +17,7 @@ function SingleAlbum() {
   useEffect(() => {
     fetchSingleAlbum();
     fetchReviews();
+    fetchUser();
   }, []);
 
   async function fetchSingleAlbum() {
@@ -44,6 +46,30 @@ function SingleAlbum() {
     navigate(`/albums/${id}/reviews/${reviewId}/comments`);
   }
 
+  async function onDelete(albumId) {
+    const response = await axios.delete(`${API}/albums/${albumId}`, {
+      headers: {
+        Authorization: `Bearer ${props?.token}`,
+      },
+    });
+    if (response.status >= 200 && response.status < 300) {
+      navigate("/");
+    }
+  }
+
+  async function fetchUser() {
+    try {
+      const { data: json } = await axios.get(`${API}/users/info`, {
+        headers: {
+          Authorization: `Bearer ${props?.token}`,
+        },
+      });
+      setUser(json);
+    } catch (err) {
+      console.error("Unable to retrieve user.", err.message);
+    }
+  }
+
   function getAvgRating(reviews) {
     if (reviews.length === 0) {
       return 0;
@@ -60,6 +86,10 @@ function SingleAlbum() {
     navigate(`/albums/${id}/reviews`);
   }
 
+  function isAdmin() {
+    return user.role === "ADMIN";
+  }
+
   return (
     <div className="single-album">
       <div className="single-album-img">
@@ -71,6 +101,11 @@ function SingleAlbum() {
         <h3>Average Rating: {avgRating}</h3>
         <h4>Genre: {album.genre}</h4>
         <h4>Release Date: {album.releasedate}</h4>
+        {isAdmin() ? (
+          <button onClick={() => onDelete(album.id)}>Delete Album</button>
+        ) : (
+          <></>
+        )}
       </div>
       <hr></hr>
       <div className="review-redirect">
