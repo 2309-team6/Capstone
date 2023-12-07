@@ -90,10 +90,41 @@ async function deleteAlbumById(id) {
   }
 }
 
+async function updateAlbum(id, updatedFields) {
+  try {
+    const { rows: updatedAlbum } = await db.query(
+      `
+      UPDATE albums
+      SET title = $1, artist = $2, genre = $3, releasedate = $4, imgurl = $5
+      WHERE id = $6
+      RETURNING *
+      `,
+      [
+        updatedFields.title,
+        updatedFields.artist,
+        updatedFields.genre,
+        updatedFields.releaseDate,
+        updatedFields.imgUrl,
+        id,
+      ]
+    );
+
+    if (!updatedAlbum || updatedAlbum.length === 0) {
+      throw new Error("Album not found");
+    }
+
+    return updatedAlbum;
+  } catch (err) {
+    console.error("Unable to update album.", err.message);
+    throw err;
+  }
+}
+
 module.exports = {
   createAlbum,
   createAlbumReviews,
   getAllAlbums,
   getAlbum,
   deleteAlbumById,
+  updateAlbum,
 };

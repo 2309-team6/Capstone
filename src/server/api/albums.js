@@ -6,6 +6,7 @@ const {
   deleteAlbumById,
   getAllAlbums,
   createAlbum,
+  updateAlbum,
 } = require("../db/albums");
 const { isLoggedIn } = require("./roles");
 
@@ -53,6 +54,22 @@ albumRouter.post("/", isLoggedIn("admin"), async (req, res, next) => {
     res
       .status(201)
       .json({ message: "Album added successfully", album: newAlbum });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// PATCH
+albumRouter.patch("/:id", isLoggedIn("admin"), async (req, res, next) => {
+  try {
+    const updatedAlbum = await updateAlbum(req.params.id, req.body);
+    if (!updatedAlbum) {
+      return res.status(404).json({ message: "Album not found" });
+    }
+    res.json({
+      message: "Album updated successfully",
+      comment: updatedAlbum,
+    });
   } catch (err) {
     next(err);
   }
