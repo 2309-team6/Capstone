@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function Account() {
-  const [comments, setComments] = useState([]);
+
+function Account({user}) {
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    fetchComments();
-  }, [userId]);
+    fetchReviews();
+  }, []);
 
-  async function fetchComments() {
-    let API = `http://localhost:3000/api/users/details/${userId}`;
+  async function fetchReviews() {
+    let API = `http://localhost:3000/api/users/details/${user}`;
 
     try {
       const { data: response } = await axios.get(API);
-      setComments(response.comments);
+      setComments(response.reviews);
     } catch (error) {
       console.error(error.message);
     }
@@ -22,11 +23,11 @@ function Account() {
   return (
     <div className='account-content-container'>
       <h1>Account Info</h1>
-      {comments.length ? (
+      {reviews.length ? (
         <ul>
-          {comments.map((comment) => (
-            <li key={comment.id}>
-              <h3>{comment.content}</h3>
+          {reviews.map((review) => (
+            <li key={review.id}>
+              <h3>{review.content}</h3>
             </li>
           ))}
         </ul>
