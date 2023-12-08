@@ -27,7 +27,7 @@ function AdminUsers(props) {
 
   return (
     <div className="admin-container">
-      <h2>List of all Registered Users</h2>
+      <h2>Registered Users</h2>
       <ul>
         {users?.map((user) => {
           return (
