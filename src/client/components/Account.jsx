@@ -169,7 +169,10 @@ function Account(props) {
             <ul>
             {myReviews.map((review) => (
               <li key={review?.id}>
-                <h3>{review.rating}</h3>
+                <h3>
+                  Rating:
+                  <Rating value={review.rating} className="star-rating-2" readOnly cancel={false}/>
+                </h3>
                 <h3>{review.comment}</h3>
                 <button onClick={() => deleteReview(review?.id)}>
                   Delete

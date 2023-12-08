@@ -13,12 +13,24 @@ const { isLoggedIn } = require("./roles");
 // GET /api/albums/:id
 albumRouter.get("/:id", async (req, res, next) => {
   try {
-    const album = await getAlbum(req.params.id);
+    const albums = await getAlbumById(req.params.id);
+    for (let x = 0; x < albums.length; x++) {
+        const AlbumName = await getAlbumNameById(albums[x].id);
+        albums[x].title = albumMaine;
+        const users = [];
+        for (let y = 0; y < albums[x].title.length; y++) {
+          const currentComment = reviews[x].comments[y];
+          const album = await getAlbumById(currentAlbum.title);
+          albums.push(album);
+        }
+        albums[x].title = albumName;
+      }
     res.send(album);
   } catch (err) {
     next(err);
   }
 });
+
 
 // GET /api/albums/
 albumRouter.get("/", async (req, res, next) => {

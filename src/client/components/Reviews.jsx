@@ -9,7 +9,6 @@ let API = "http://localhost:3000/api/";
 
 function AlbumReviews(props) {
   const [rating, setRating] = useState(0);
-  const [myReviews, setMyReviews] = useState("");
   const [comment, setComment] = useState("");
   const navigate = useNavigate();
 
@@ -34,7 +33,6 @@ function AlbumReviews(props) {
       });
 
       if (response.status >= 200 && response.status < 300) {
-        setMyReviews([...myReviews, response.data]);
         navigate(`/albums/${id}`);
       }
     } catch (err) {
