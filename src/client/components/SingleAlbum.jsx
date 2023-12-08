@@ -117,42 +117,44 @@ function SingleAlbum(props) {
 
   return (
     <div className="single-album">
-      <div className="single-album-img">
-        <img src={album.imgurl} />
-      </div>
-      <div className="album-info">
-        <h1 className="album-title">{album.title}</h1>
-        <h2 className="album-artist">By: {album.artist}</h2>
-        <h3 className="album-rating">Average Rating: {avgRating}</h3>
+      <div className="single-album-flex">
+        <div className="single-album-img">
+          <img src={album.imgurl} />
+        </div>
+        <div className="album-info">
+          <h1 className="album-title">{album.title}</h1>
+          <h2 className="album-artist">By: {album.artist}</h2>
+          <h3 className="album-rating">Average Rating: {avgRating}</h3>
 
-        {isAdmin() ? (
-          <div className="genre-edit">
-            <label>Genre: </label>
-            <input
-              value={genre}
-              className="edit-input"
-              onChange={(event) => setGenre(event.target.value)}
-            ></input>
-            <button
-              className="album-edit"
-              onClick={() => onSaveAlbum(album.id)}
-            >
-              Save Changes
+          {isAdmin() ? (
+            <div className="genre-edit">
+              <label>Genre: </label>
+              <input
+                value={genre}
+                className="edit-input"
+                onChange={(event) => setGenre(event.target.value)}
+              ></input>
+              <button
+                className="album-edit"
+                onClick={() => onSaveAlbum(album.id)}
+              >
+                Save Changes
+              </button>
+            </div>
+          ) : (
+            <h4 className="album-genre">Genre: {album.genre}</h4>
+          )}
+
+          <h4 className="album-date">Release Year: {album.releasedate}</h4>
+
+          {isAdmin() ? (
+            <button className="album-edit" onClick={() => onDelete(album.id)}>
+              Delete Album
             </button>
-          </div>
-        ) : (
-          <h4 className="album-genre">Genre: {album.genre}</h4>
-        )}
-
-        <h4 className="album-date">Release Year: {album.releasedate}</h4>
-
-        {isAdmin() ? (
-          <button className="album-edit" onClick={() => onDelete(album.id)}>
-            Delete Album
-          </button>
-        ) : (
-          <></>
-        )}
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
 
       <hr></hr>
