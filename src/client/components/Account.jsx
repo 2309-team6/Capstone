@@ -103,27 +103,6 @@ function Account(props) {
     }
   }
 
-  async function editReview(id, updatedReview) {
-    try {
-      const response = await fetch(`${API}/reviews/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${props?.token}`,
-        },
-        body: JSON.stringify({
-          updatedReview,
-        }),
-      });
-      const json = await response.json();
-      console.log("patch request response: ", json);
-
-      fetchMyAccountDetails(user.id);
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
   async function editComment(id, updatedComment) {
     try {
       const response = await fetch(`${API}/comments/${id}`, {
@@ -136,7 +115,27 @@ function Account(props) {
           updatedComment,
         }),
       });
+      const json = await response.json();
+      console.log("patch request response: ", json);
 
+      fetchMyAccountDetails(user.id);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  async function editReview(id, updatedReview) {
+    try {
+      const response = await fetch(`${API}/reviews/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props?.token}`,
+        },
+        body: JSON.stringify({
+          updatedReview,
+        }),
+      });
       const json = await response.json();
       console.log("patch request response: ", json);
 
@@ -167,7 +166,6 @@ function Account(props) {
               </li>
             ))}
           </ul>
-
           <h2>My Comments</h2>
 
           <ul>

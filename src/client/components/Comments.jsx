@@ -16,7 +16,7 @@ function Comments(props) {
 
   async function handleSubmit() {
     const postData = {
-      userId: 1, // Get real userID. Need log in.
+      userId: props?.user?.id,
       reviewId: reviewId,
       content: comment,
     };

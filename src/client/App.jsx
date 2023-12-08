@@ -7,6 +7,7 @@ import Account from "./components/Account";
 import Register from "./components/Register";
 import AlbumReviews from "./components/Reviews";
 import Comments from "./components/Comments";
+import FilteredAlbums from "./components/FilteredAlbums";
 import SearchBar from "./components/SearchBar";
 import AdminFooter from "./components/AdminFooter";
 import AddAlbum from "./components/AddAlbum";
@@ -53,7 +54,7 @@ function App() {
 
       setUser(json);
     } catch (err) {
-      console.error("Unable to retrieve user.", err.message);
+      // console.error("Unable to retrieve user.", err.message);
     }
   }
 
@@ -66,7 +67,7 @@ function App() {
       <header className="app-header">
         <h1>
           {" "}
-          <img id="comp-img" src="/computer.png"></img>Album Review Project
+          <img id="comp-img" src="/computer.png"></img>Album Reviews
         </h1>
         <nav>
           <Link to="/" className="nav-link">
@@ -79,10 +80,6 @@ function App() {
             Log In
           </Link>
         </nav>
-        <SearchBar
-          onSearch={(searchTerm) => filterAlbums(searchTerm, albums)}
-          albums={albums}
-        />
       </header>
       {isAdmin() ? <AdminFooter token={token} user={user} /> : <></>}
 
@@ -109,11 +106,11 @@ function App() {
         <Route path="/account" element={<Account token={token} />} />
         <Route
           path="/albums/:id/reviews"
-          element={<AlbumReviews token={token} />}
+          element={<AlbumReviews token={token} user={user} />}
         />
         <Route
           path="/albums/:id/reviews/:reviewId/comments"
-          element={<Comments token={token} />}
+          element={<Comments token={token} user={user} />}
         />
         <Route
           path="/admin/album"
@@ -123,7 +120,9 @@ function App() {
           path="/admin/users"
           element={<AdminUsers token={token} user={user} />}
         />
+        <Route path="/search/:searchTerm" element={<FilteredAlbums />} />
       </Routes>
+      
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
+
 function SearchBar({ onSearch, albums }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = () => {
-    onSearch(searchTerm, albums);
+    onSearch(searchTerm);
+    setSearchTerm(''); 
   };
 
   const handleKeyPress = (e) => {
