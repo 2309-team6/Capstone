@@ -37,6 +37,7 @@ function FilteredAlbums({ albums, searchTerm }) {
           <h3>#{album.id}</h3>
           <h3>{album.releasedate}</h3>
           <img src={album.imgurl} alt={album.title} />
+          <button onClick={() => navigate(`/albums/${album.id}`)}>Show Details</button>
         </li>
       ))}
     </ul>
