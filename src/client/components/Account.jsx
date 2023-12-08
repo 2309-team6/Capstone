@@ -10,6 +10,10 @@ function Account(props) {
   const [myComments, setMyComments] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [error, setError] = useState(null);
+  
+  const [commentToEdit, setCommentToEdit] = useState(null);
+  const [updatedComment, setUpdatedComment] = useState("");
+
 
   useEffect(() => {
     if (props.token) {
@@ -101,7 +105,16 @@ function Account(props) {
     }
   }
 
-  async function editComment(id, updatedComment) {
+  function handleEditComment(id, updatedComment) {
+    setCommentToEdit(id)
+    setUpdatedComment(updatedComment)
+  }
+  function handleCancelEdit () {
+    setCommentToEdit(null);
+    setUpdatedComment('');
+  };
+
+  async function saveEditComment(id, updatedComment) {
     try {
       const response = await fetch(`${API}/comments/${id}`, {
         method: "PATCH",
@@ -117,11 +130,14 @@ function Account(props) {
       const json = await response.json();
       console.log("patch request response: ", json);
 
-      fetchMyAccountDetails(user.id);
+      // fetchMyAccountDetails(json.id);
     } catch (error) {
       console.error(error.message);
     }
   }
+
+
+
 
   return (
     <div className="account-page-container">
@@ -131,19 +147,44 @@ function Account(props) {
 
       {props.token ? (
         <div>
+
           <div className="comment-history">
             <h2>My Comments</h2>
             <ul>
               {myComments.map((comment) => (
                 <li key={comment?.id}>
-                  <h3>{comment.content}</h3>
-                  <button onClick={() => deleteComment(comment?.id)}>
-                    Delete Comment
-                  </button>
+
+                  {commentToEdit === comment.id ? (
+                    <>
+                      <input
+                        type="text" placeholder={comment.content}
+                        value = {updatedComment}
+                        onChange={(e) => setUpdatedComment(e.target.value)}
+                      />
+                      <button onClick={() => saveEditComment(comment?.id, updatedComment)}>
+                        Save
+                      </button>
+                      <button onClick={() => handleCancelEdit(comment?.id)}>
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                  <>
+                    <h3>{comment.content}</h3>
+                    <button onClick={() => deleteComment(comment?.id)}>
+                      Delete Comment
+                    </button>
+                    <button onClick={() => handleEditComment(comment?.id, updatedComment)}>
+                      Edit Comment
+                    </button>
+                  
+                  </>
+                )}
                 </li>
               ))}
             </ul>
           </div>
+
           <div className="review-history">
           <h2>My Reviews</h2>
           <ul>
