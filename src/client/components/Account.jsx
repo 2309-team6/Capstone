@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Rating } from "primereact/rating";
 
 let API = "http://localhost:3000/api/";
 
 function Account(props) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState([]);
   const [myComments, setMyComments] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [error, setError] = useState(null);
@@ -13,10 +14,14 @@ function Account(props) {
   useEffect(() => {
     if (props.token) {
       fetchMyAccount();
-      // console.log("user.id: ", user.id);
-      // fetchMyAccountDetails(user.id);
     }
   }, [props.token]);
+
+  useEffect(() => {
+    if (user.id) {
+      fetchMyAccountDetails(user.id);
+    }
+  }, [user.id]);
 
   // async function tokenTest() {
   //   if (props) {
@@ -39,7 +44,11 @@ function Account(props) {
       const json = await response.json();
 
       console.log("user: ", json);
-      setUser(json); //maybe return here?
+      setUser(json, () => {
+        if (json.id) {
+          fetchMyAccountDetails(json.id);
+        }
+      });
     } catch (error) {
       setError(error.message);
     }
@@ -65,6 +74,7 @@ function Account(props) {
       console.log("json.comments: ", myComments);
       console.log("json.reviews: ", myReviews);
     } catch (error) {
+      console.error("Uh-OH! Can't fetch account details", error);
       setError(error.message);
     }
   }
@@ -103,27 +113,6 @@ function Account(props) {
     }
   }
 
-  async function editComment(id, updatedComment) {
-    try {
-      const response = await fetch(`${API}/comments/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${props?.token}`,
-        },
-        body: JSON.stringify({
-          updatedComment,
-        }),
-      });
-      const json = await response.json();
-      console.log("patch request response: ", json);
-
-      fetchMyAccountDetails(user.id);
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
   async function editReview(id, updatedReview) {
     try {
       const response = await fetch(`${API}/reviews/${id}`, {
@@ -145,6 +134,28 @@ function Account(props) {
     }
   }
 
+  async function editComment(id, updatedComment) {
+    try {
+      const response = await fetch(`${API}/comments/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props?.token}`,
+        },
+        body: JSON.stringify({
+          updatedComment,
+        }),
+      });
+
+      const json = await response.json();
+      console.log("patch request response: ", json);
+
+      fetchMyAccountDetails(user.id);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   return (
     <div className="account-page-container">
       {error && <p>{error}</p>}
@@ -154,28 +165,31 @@ function Account(props) {
       {props.token ? (
         <div>
           <h2>My Reviews</h2>
-
-          <ul>
+          {myReviews && myReviews.length > 0 && (
+            <ul>
             {myReviews.map((review) => (
               <li key={review?.id}>
-                <h3>{review}</h3>
+                <h3>{review.rating}</h3>
+                <h3>{review.comment}</h3>
                 <button onClick={() => deleteReview(review?.id)}>
                   Delete
                 </button>
-                <button onClick={() => editReview(review?.id)}>Edit</button>
+                <button onClick={() => editReview(review?.id, updatedReview)}>Edit</button>
               </li>
             ))}
           </ul>
+            )}
+
           <h2>My Comments</h2>
 
           <ul>
             {myComments.map((comment) => (
               <li key={comment?.id}>
-                <h3>{comment}</h3>
+                <h3>{comment.content}</h3>
                 <button onClick={() => deleteComment(comment?.id)}>
                   Delete
                 </button>
-                <button onClick={() => editComment(comment?.id)}>Edit</button>
+                <button onClick={() => editComment(comment?.id, updatedComment)}>Edit</button>
               </li>
             ))}
           </ul>
