@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Rating } from "primereact/rating";
 
 let API = "http://localhost:3000/api/";
 
@@ -18,13 +19,6 @@ function Account(props) {
     }
   }, [props.token]);
 
-  // async function tokenTest() {
-  //   if (props) {
-  //     fetchMyAccount();
-  //     fetchMyAccountDetails();
-  //   }
-  // }
-
   // need this function to initally grab user info (user.id)
   async function fetchMyAccount() {
     try {
@@ -39,9 +33,8 @@ function Account(props) {
       const json = await response.json();
 
       console.log("user: ", json);
-      setUser(json); //maybe return here?
-      // console.log("usestate user: ", user)
-      // console.log("user.id: ", user.id)
+      setUser(json);
+
       if (json.id) {
         fetchMyAccountDetails(json.id);
       }
@@ -156,7 +149,14 @@ function Account(props) {
           <ul>
             {myReviews.map((review) => (
               <li key={review?.id}>
-                <h3>{review.content}</h3>
+                <h3>{review.comment}</h3>
+                <h4>Rating: </h4>
+                <Rating
+                  id="rating"
+                  value={review.rating}
+                  readOnly
+                  cancel={false}
+                />
                 <button onClick={() => deleteReview(review?.id)}>
                   Delete Review
                 </button>
