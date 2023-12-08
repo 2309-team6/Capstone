@@ -57,22 +57,19 @@ function AlbumReviews(props) {
         </div>
       </div>
 
-      {/* <div className="review-form-name">
-        <label htmlFor="comment">Name: </label>
-        <InputText
-          id="comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
-      </div> */}
-
       <div className="review-form-text">
         <label htmlFor="comment">Review: </label>
-        <InputText
+        {/* <InputText
           id="comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-        />
+        /> */}
+        <textarea
+          type="text"
+          id="comment"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        ></textarea>
       </div>
       <div className="review-form-button">
         <Button label="Submit" onClick={handleSubmit} />

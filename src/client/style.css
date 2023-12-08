@@ -8,16 +8,15 @@
 }
 
 .app-header {
-  margin-bottom: 20px;
-  font-size: 20px;
-  display: flex;
+  display: flex; 
+  justify-content: space-between;
   align-items: center;
-  background-color: #a3b899; 
-  padding: 0.5rem 0.5rem;
+  padding: 1rem -1rem;
+  color: #667b68;
 }
 
-#comp-img{
-  width: 50px;
+#comp-img {
+  width: 40px;
   margin-right: 15px;
 }
 
@@ -32,7 +31,7 @@ nav {
 }
 
 .nav-link {
-  color: black; 
+  color: #667b68; 
   font-size: 1.5rem;
   padding-left: 10px; 
   padding-right: 30px;
@@ -40,7 +39,7 @@ nav {
 }
 
 .nav-link:hover {
-  color: #667b68;
+  color: #a3b899;
   text-transform: uppercase;
   font-weight: bold; 
 }
@@ -303,12 +302,25 @@ nav {
 
 /* Album Review Form */
 .star-rating-2 {
-  margin: 1rem 1rem; 
+  margin: 1rem 1rem;
   color: #f2be49;
+
 }
 
 .review-title {
   font-size: 1.5rem;
+}
+
+.review-form-text {
+  margin-top: 1rem;
+  display: flex; 
+  flex-direction: column;
+}
+
+.review-form-text > textarea {
+  resize: none;
+  width: 20rem;
+  height: 15rem;
 }
 
 .review-form-button > button {
@@ -330,12 +342,24 @@ nav {
   background-color: #a3b899; 
   border: 2px solid #a3b899; 
   color: white; 
+  margin-top: 1rem;
 }
 .comment-submit-button > button:hover {
   background-color: white; 
   border: 2px solid #a3b899; 
   color: #a3b899; 
   font-weight: bold;
+}
+
+.comment-form-entry {
+  display: flex; 
+  flex-direction: column;
+}
+
+.comment-form-entry > textarea {
+  resize: none;
+  width: 20rem;
+  height: 15rem;
 }
 
 /* Admin Footer  */
