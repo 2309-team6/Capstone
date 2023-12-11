@@ -12,6 +12,10 @@ function Account(props) {
   const [error, setError] = useState(null);
   const [commentToEdit, setCommentToEdit] = useState(null);
   const [updatedComment, setUpdatedComment] = useState("");
+  
+  const [reviewToEdit, setReviewToEdit] = useState(null);
+  const [updatedReview, setUpdatedReview] = useState(""); //review comment
+  const [updatedRating, setUpdatedRating] = useState(0); //review stars
 
   useEffect(() => {
     if (props.token) {
@@ -120,6 +124,17 @@ function Account(props) {
     setUpdatedComment("");
   }
 
+  function handleEditReview(id, updatedReview, updatedRating) {
+    setReviewToEdit(id);
+    setUpdatedReview(updatedReview);
+    setUpdatedRating(updatedRating);
+  }
+  function handleCancelEditReview() {
+    setReviewToEdit(null);
+    setUpdatedReview("");
+    setUpdatedRating(0);
+  }
+
   async function saveEditComment(id, updatedComment) {
     try {
       const commentToUpdate = myComments.find((comment) => comment.id === id);
@@ -155,8 +170,59 @@ function Account(props) {
         );
 
         setMyComments(updatedComments);
+        
+        handleCancelEdit();
       } else {
         console.error("Comment not updated successfully.");
+      }
+      // const json = await response.json();
+      // console.log("patch request response: ", json);
+
+      // fetchMyAccountDetails(json.id);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  async function saveEditReview(id, updatedReview, updatedRating) {
+    try {
+      const reviewToUpdate = myReviews.find((review) => review.id === id);
+      if (!reviewToUpdate) {
+        console.error(`Review with id ${id} not found.`);
+        return;
+      }
+
+      const response = await fetch(`${API}/reviews/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props?.token}`,
+        },
+        body: JSON.stringify({
+          content: {updatedReview, updatedRating}
+        }),
+      });
+
+      const jsonResponse = await response.json();
+
+      console.log("Server Response:", jsonResponse);
+
+      if (jsonResponse.review) {
+        const updatedReviews = myReviews.map((review) =>
+          review.id === id
+            ? {
+                ...jsonResponse.review,
+                userId: reviewToUpdate.userId,
+                reviewId: reviewToUpdate.reviewId,
+              }
+            : review
+        );
+
+        setMyReviews(updatedReviews);
+        
+        handleCancelEditReview();
+      } else {
+        console.error("Review not updated successfully.");
       }
       // const json = await response.json();
       // console.log("patch request response: ", json);
@@ -229,19 +295,76 @@ function Account(props) {
               {myReviews && myReviews.length > 0 ? (
                 myReviews.map((review) => (
                   <li key={review?.id}>
-                    <h3>{review.comment}</h3>
-                    <h4>Rating: </h4>
-                    <Rating
-                      id="rating"
-                      value={review.rating}
-                      readOnly
-                      cancel={false}
-                    />
-                    <button onClick={() => deleteReview(review?.id)}>
-                      Delete Review
-                    </button>
+
+                    {reviewToEdit === review.id ? (
+                      <>
+                        <input
+                          type="text"
+                          placeholder={review.comment}
+                          value={updatedReview}
+                          onChange={(e) => setUpdatedReview(e.target.value)}
+                        />
+                        {console.log("updatedReview: ",updatedReview)}
+
+                        <div>
+                          <Rating
+                            id="rating"
+                            value={updatedRating}
+                            onChange={(e) => setUpdatedRating(e.value ?? 0)}
+                            cancel={false}
+                          />
+                          {console.log("updatedRating: ",updatedRating)}
+                        </div>
+
+                        <button
+                          onClick={() =>
+                            saveEditReview(review?.id, updatedReview, updatedRating)
+                          }
+                        >
+                          Save
+                        </button>
+                        <button onClick={() => handleCancelEditReview(review?.id)}>
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <h3>{review.comment}</h3>
+                        <h4>Rating: </h4>
+                        <Rating
+                          id="rating"
+                          value={review.rating}
+                          readOnly
+                          cancel={false}
+                        />
+                        <button onClick={() => deleteReview(review?.id)}>
+                          Delete Review
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleEditReview(review?.id, updatedReview, updatedRating)
+                          }
+                        >
+                          Edit Review
+                        </button>
+                      </>
+                    )}
                   </li>
                 ))
+
+                //     <h3>{review.comment}</h3>
+                //     <h4>Rating: </h4>
+                //     <Rating
+                //       id="rating"
+                //       value={review.rating}
+                //       readOnly
+                //       cancel={false}
+                //     />
+                //     <button onClick={() => deleteReview(review?.id)}>
+                //       Delete Review
+                //     </button>
+                //   </li>
+                // ))
               ) : (
                 <p>No reviews available.</p>
               )}
