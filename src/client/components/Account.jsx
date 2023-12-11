@@ -23,6 +23,9 @@ function Account(props) {
     }
   }, [props.token]);
 
+  const [originalReviewId, setOriginalReviewId] = useState(null);
+  const [originalUserId, setOriginalUserId] = useState(null);
+
   // need this function to initally grab user info (user.id)
   async function fetchMyAccount() {
     try {
@@ -35,6 +38,15 @@ function Account(props) {
       });
 
       const json = await response.json();
+
+      setMyComments(json.comments);
+
+      if (json.comments && json.comments.length > 0) {
+        setOriginalReviewId(json.comments[0].reviewId);
+        setOriginalUserId(json.comments[0].userId);
+      }
+
+      setMyReviews(json.reviews);
 
       console.log("user: ", json);
       setUser(json);
@@ -116,6 +128,12 @@ function Account(props) {
 
   async function saveEditComment(id, updatedComment) {
     try {
+      const commentToUpdate = myComments.find(comment => comment.id === id);
+      if (!commentToUpdate) {
+        console.error(`Comment with id ${id} not found.`);
+        return;
+      }
+
       const response = await fetch(`${API}/comments/${id}`, {
         method: "PATCH",
         headers: {
@@ -123,12 +141,31 @@ function Account(props) {
           Authorization: `Bearer ${props?.token}`,
         },
         body: JSON.stringify({
-          updatedComment,
+          content: updatedComment,
         }),
       });
 
-      const json = await response.json();
-      console.log("patch request response: ", json);
+      const jsonResponse = await response.json();
+
+    console.log("Server Response:", jsonResponse);
+
+    if (jsonResponse.comment) {
+      const updatedComments = myComments.map(comment => 
+        comment.id === id ? 
+          { 
+            ...jsonResponse.comment, 
+            userId: commentToUpdate.userId, 
+            reviewId: commentToUpdate.reviewId 
+          } : 
+          comment 
+      );
+
+      setMyComments(updatedComments);
+    } else {
+      console.error("Comment not updated successfully.");
+    }
+      // const json = await response.json();
+      // console.log("patch request response: ", json);
 
       // fetchMyAccountDetails(json.id);
     } catch (error) {
@@ -142,70 +179,75 @@ function Account(props) {
   return (
     <div className="account-page-container">
       {error && <p>{error}</p>}
-
+  
       <h1>Welcome, {user.name}</h1>
-
+  
       {props.token ? (
         <div>
-
           <div className="comment-history">
             <h2>My Comments</h2>
             <ul>
-              {myComments.map((comment) => (
-                <li key={comment?.id}>
-
-                  {commentToEdit === comment.id ? (
-                    <>
-                      <input
-                        type="text" placeholder={comment.content}
-                        value = {updatedComment}
-                        onChange={(e) => setUpdatedComment(e.target.value)}
-                      />
-                      <button onClick={() => saveEditComment(comment?.id, updatedComment)}>
-                        Save
-                      </button>
-                      <button onClick={() => handleCancelEdit(comment?.id)}>
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                  <>
-                    <h3>{comment.content}</h3>
-                    <button onClick={() => deleteComment(comment?.id)}>
-                      Delete Comment
-                    </button>
-                    <button onClick={() => handleEditComment(comment?.id, updatedComment)}>
-                      Edit Comment
-                    </button>
-                  
-                  </>
-                )}
-                </li>
-              ))}
+              {myComments && myComments.length > 0 ? (
+                myComments.map((comment) => (
+                  <li key={comment?.id}>
+                    {commentToEdit === comment.id ? (
+                      <>
+                        <input
+                          type="text" placeholder={comment.content}
+                          value={updatedComment}
+                          onChange={(e) => setUpdatedComment(e.target.value)}
+                        />
+                        <button onClick={() => saveEditComment(comment?.id, updatedComment)}>
+                          Save
+                        </button>
+                        <button onClick={() => handleCancelEdit(comment?.id)}>
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <h3>{comment.content}</h3>
+                        <button onClick={() => deleteComment(comment?.id)}>
+                          Delete Comment
+                        </button>
+                        <button onClick={() => handleEditComment(comment?.id, updatedComment)}>
+                          Edit Comment
+                        </button>
+                      </>
+                    )}
+                  </li>
+                ))
+              ) : (
+                <p>No comments available.</p>
+              )}
             </ul>
           </div>
-
+  
           <div className="review-history">
-          <h2>My Reviews</h2>
-          <ul>
-            {myReviews.map((review) => (
-              <li key={review?.id}>
-                <h3>{review.comment}</h3>
-                <h4>Rating: </h4>
-                <Rating
-                  id="rating"
-                  value={review.rating}
-                  readOnly
-                  cancel={false}
-                />
-                <button onClick={() => deleteReview(review?.id)}>
-                  Delete Review
-                </button>
-              </li>
-            ))}
-          </ul>
+            <h2>My Reviews</h2>
+            <ul>
+              {myReviews && myReviews.length > 0 ? (
+                myReviews.map((review) => (
+                  <li key={review?.id}>
+                    <h3>{review.comment}</h3>
+                    <h4>Rating: </h4>
+                    <Rating
+                      id="rating"
+                      value={review.rating}
+                      readOnly
+                      cancel={false}
+                    />
+                    <button onClick={() => deleteReview(review?.id)}>
+                      Delete Review
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <p>No reviews available.</p>
+              )}
+            </ul>
+          </div>
         </div>
-      </div>
       ) : (
         <p>
           It seems you are not logged in, click here:{" "}

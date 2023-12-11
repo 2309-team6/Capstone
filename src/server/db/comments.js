@@ -69,11 +69,11 @@ async function updateComment(id, updatedFields) {
     const { rows: updatedComment } = await db.query(
       `
       UPDATE userComments
-      SET content = $1, reviewId = $2, userId = $3
-      WHERE id = $4
+      SET content = $1
+      WHERE id = $2
       RETURNING *
       `,
-      [updatedFields.content, updatedFields.reviewId, updatedFields.userId, id]
+      [updatedFields.content, id]
     );
 
     if (!updatedComment || updatedComment.length === 0) {
