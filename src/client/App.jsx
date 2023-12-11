@@ -26,24 +26,6 @@ function App() {
     fetchUser();
   }, [token]);
 
-  function filterAlbums(searchTerm, albums) {
-    const filtered = albums.filter((album) => {
-      const titleLower = album.title.toLowerCase();
-      const artistLower = album.artist.toLowerCase();
-      const genreLower = album.genre.toLowerCase();
-      const searchTermLower = searchTerm.toLowerCase();
-
-      return (
-        titleLower.includes(searchTermLower) ||
-        artistLower.includes(searchTermLower) ||
-        genreLower.includes(searchTermLower)
-      );
-    });
-
-    setFilteredAlbums(filtered);
-    return filtered;
-  }
-
   async function fetchUser() {
     try {
       const { data: json } = await axios.get(`${API}/users/info`, {
@@ -65,9 +47,7 @@ function App() {
   return (
     <div className="App">
       <header className="app-header">
-        <h1>
-          <img id="comp-img" src="/computer.png"></img>Album Reviews
-        </h1>
+        <h1>albums</h1>
         <nav>
           <Link to="/" className="nav-link">
             Albums

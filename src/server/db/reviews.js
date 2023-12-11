@@ -47,21 +47,18 @@ const createReview = async ({
   }
 };
 
-const updateReview = async (
-  id,
-  { userId, albumId, rating, comment, reviewDate }
-) => {
+const updateReview = async (id, { comment, rating }) => {
   try {
     const {
       rows: [updatedReview],
     } = await db.query(
       `
-            UPDATE albumReviews
-            SET userId = $2, albumId = $3, rating = $4, comment = $5, reviewDate = $6
-            WHERE id = $1
-            RETURNING *
-            `,
-      [id, userId, albumId, rating, comment, reviewDate]
+        UPDATE albumReviews
+        SET comment = $2, rating = $3
+        WHERE id = $1
+        RETURNING *
+      `,
+      [id, comment, rating]
     );
 
     if (!updatedReview) {
