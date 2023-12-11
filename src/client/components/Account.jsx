@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Rating } from "primereact/rating";
+import { rating } from "primereact/rating";
 
 let API = "http://localhost:3000/api/";
 
@@ -156,6 +156,10 @@ function Account(props) {
     }
   }
 
+  function getAlbumById(albums, albumId) {
+    return albums.find((album) => album?.id === albumId)?.title;
+  }
+
   return (
     <div className="account-page-container">
       {error && <p>{error}</p>}
@@ -169,10 +173,7 @@ function Account(props) {
             <ul>
             {myReviews.map((review) => (
               <li key={review?.id}>
-                <h3>
-                  Rating:
-                  <Rating value={review.rating} className="star-rating-2" readOnly cancel={false}/>
-                </h3>
+                <h3>{getAlbumById(review.albumId)}</h3>
                 <h3>{review.comment}</h3>
                 <button onClick={() => deleteReview(review?.id)}>
                   Delete

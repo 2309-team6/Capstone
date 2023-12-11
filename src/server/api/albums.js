@@ -16,16 +16,16 @@ albumRouter.get("/:id", async (req, res, next) => {
     const albums = await getAlbumById(req.params.id);
     for (let x = 0; x < albums.length; x++) {
         const AlbumName = await getAlbumNameById(albums[x].id);
-        albums[x].title = albumMaine;
-        const users = [];
-        for (let y = 0; y < albums[x].title.length; y++) {
-          const currentComment = reviews[x].comments[y];
+        albums[x].title = albumName;
+        const reviews = [];
+        for (let y = 0; y < albums[x].length; y++) {
+          const currentAlbum = reviews[x].albumId[y];
           const album = await getAlbumById(currentAlbum.title);
           albums.push(album);
         }
         albums[x].title = albumName;
       }
-    res.send(album);
+    res.send(reviews);
   } catch (err) {
     next(err);
   }
