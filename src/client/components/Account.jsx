@@ -10,6 +10,8 @@ function Account(props) {
   const [myComments, setMyComments] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [error, setError] = useState(null);
+  const [commentToEdit, setCommentToEdit] = useState(null);
+  const [updatedComment, setUpdatedComment] = useState("");
 
   useEffect(() => {
     if (props.token) {
