@@ -8,7 +8,6 @@ function Register({ setToken }) {
   const [error, setError] = useState(null);
   async function handleSubmit(event) {
     event.preventDefault();
-    // console.log("submit button clicked!")
     try {
       let response = await fetch(`${API}users/register`, {
         method: "POST",

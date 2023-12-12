@@ -79,8 +79,6 @@ reviewsRouter.post("/", isLoggedIn("user", "admin"), async (req, res, next) => {
       reviewDate: new Date().toISOString(),
     });
 
-    console.log("SQL Query:", newReview.query);
-
     res
       .status(201)
       .json({ message: "Review added successfully", review: newReview });
@@ -95,11 +93,11 @@ reviewsRouter.patch(
   isLoggedIn("user", "admin"),
   async (req, res, next) => {
     try {
-      const updatedReview = await updateReview(
-        req.params.id,
-        { $set: req.body },
-        { new: true }
-      );
+      const content = {
+        comment: req.body.comment,
+        rating: req.body.rating,
+      };
+      const updatedReview = await updateReview(req.params.id, content);
       if (!updatedReview) {
         return res.status(404).json({ message: "Review not found" });
       }

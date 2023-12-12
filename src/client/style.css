@@ -50,6 +50,23 @@ nav {
 }
 
 /* Account */
+.account-page-container > h1 {
+  color: #667b66;
+}
+
+.account-button > button {
+  margin: .5rem .5rem;
+  background-color: #a3b899; 
+  border: 2px solid #a3b899; 
+  color: white; 
+}
+.account-button > button:hover {
+  background-color: white; 
+  border: 2px solid #a3b899; 
+  color: #a3b899; 
+  font-weight: bold;
+}
+
 
 /* All Albums */
 .all-album-img {

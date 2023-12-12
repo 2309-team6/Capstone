@@ -34,7 +34,6 @@ albumRouter.get("/", async (req, res, next) => {
 // POST
 albumRouter.post("/", isLoggedIn("admin"), async (req, res, next) => {
   try {
-    console.log(req.body);
     const { title, artist, genre, releaseDate, imgUrl } = req.body;
 
     if (!title) {
