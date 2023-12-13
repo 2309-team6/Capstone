@@ -4,8 +4,6 @@
 
 Welcome to the Album Review website! This application is built using the PERN (PostgreSQL, Express, React, Node.js) stack, providing a seamless and interactive experience for users to explore and contribute album reviews.
 
-### Table of Contents
-
 ## 1. User Guide
 
 ### Accessing the Website
