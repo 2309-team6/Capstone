@@ -121,7 +121,7 @@ function Account(props) {
     setUpdatedRating(0);
   }
 
-  async function saveEditComment(id, updatedComment) {
+  async function saveEditComment(reviewid, id, updatedComment) {
     try {
       const commentToUpdate = userComments.find((comment) => comment.id === id);
       if (!commentToUpdate) {
@@ -137,6 +137,8 @@ function Account(props) {
         },
         body: JSON.stringify({
           content: updatedComment,
+          reviewId: reviewid,
+          userId: user?.id,
         }),
       });
 
@@ -303,8 +305,13 @@ function Account(props) {
                         />
                         <div className="account-button">
                           <button
-                            onClick={() =>
-                              saveEditComment(comment?.id, updatedComment)
+                            value={comment?.reviewid}
+                            onClick={(event) =>
+                              saveEditComment(
+                                event?.target?.value,
+                                comment?.id,
+                                updatedComment
+                              )
                             }
                           >
                             Save
